@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>架次信息查询</title>
+</head>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/common.css" rel="stylesheet">
+<script src="../js/jquery.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/commondata.js"></script>
+<script src="../plusins/base64.min.js"></script>
+<style type="text/css">
+    .table-line th, .table-line td {
+        text-align: center;
+        padding: 15px 8px !important;
+    }
+
+    .table-line td {
+        cursor: pointer;
+    }
+
+    .table-line tr th:first-child, .table-line tr td:first-child {
+        text-align: left;
+    }
+
+    .table-line tr th:last-child, .table-line tr td:last-child {
+        padding: 7px 0 !important;
+    }
+</style>
+<body>
+<!--新版头部页面-->
+<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="maingoogle.html">主页面</a></li>
+                    <li>
+                        <a href="fline.html">航线记录</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            架次信息管理
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="flightcreate.html">架次信息录入</a>
+                            </li>
+                            <li>
+                                <a href="flightsearch.html">架次信息查看</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<!--<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">-->
+    <!--<nav class="navbar navbar-default">-->
+        <!--<div class="container">-->
+            <!--<div class="navbar-header">-->
+                <!--<a class="navbar-brand" href="#">迅蚁-->
+                    <!--<small>Xunyi</small>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+                <!--<ul class="nav navbar-nav"></ul>-->
+                <!--<ul class="nav navbar-nav navbar-right">-->
+                    <!--&lt;!&ndash; <li><a href="main.html">主页面</a></li> &ndash;&gt;-->
+                    <!--<li><a href="maingoogle.html">主页面</a></li>-->
+                    <!--<li><a href="fline.html">航线记录</a></li>-->
+                    <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+                           <!--aria-expanded="false">架次信息管理<span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="flightcreate.html">架次信息录入</a></li>-->
+                            <!--<li><a href="flightsearch.html">架次信息查看</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</nav>-->
+<!--</header>-->
+<div class="container" style="margin-top: 50px;">
+    <div class="row" style="text-align: center;">
+        <h2>架次信息查询</h2>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-sm-6" style="line-height: 34px;height: 40px;">
+                <label style="float: left;text-align: right;width: 35%;" for="fid">飞行器ID</label>
+                <input type="text" class="form-control" style="width: 300px;display: inline-block;margin-left: 10px;"
+                       id="fid" placeholder="飞行器ID">
+            </div>
+            <div class="form-group col-sm-6" style="line-height: 34px;height: 40px;">
+                <label style="float: left;text-align: right;width: 25%;" for="id">架次编号</label>
+                <input type="text" class="form-control" style="width: 300px;display: inline-block;margin-left: 10px;"
+                       id="id" placeholder="架次编号">
+            </div>
+            <div class="form-group col-sm-6" style="line-height: 34px;height: 40px;">
+                <label style="float: left;text-align: right;width: 35%;" for="dt">日期</label>
+                <input type="date" class="form-control" style="width: 300px;display: inline-block;margin-left: 10px;"
+                       id="dt" placeholder="日期">
+            </div>
+            <div class="form-group col-sm-6" style="line-height: 34px;height: 40px;">
+                <label style="float: left;text-align: right;width: 25%;" for="remark">备注信息</label>
+                <input type="text" class="form-control" style="width: 300px;display: inline-block;margin-left: 10px;"
+                       id="remark" placeholder="备注信息">
+                <a id="search" class="btn btn-primary" style="float: right;">搜索</a>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table class="table table-hover table-line">
+                <thead>
+                <tr>
+                    <th>飞行器ID</th>
+                    <th>架次编号</th>
+                    <th>日期</th>
+                    <th>起飞场温度</th>
+                    <th>起飞场气压</th>
+                    <th>着陆场温度</th>
+                    <th>着陆场气压</th>
+                    <th>电池编号</th>
+                    <th>起飞重量</th>
+                    <th>备注信息</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>fid</th>
+                    <th>id</th>
+                    <th>dt</th>
+                    <!-- <th>num_flight</th> -->
+                    <th>temp_takeoff</th>
+                    <th>temp_takeoff_pa</th>
+                    <th>temp_landing</th>
+                    <th>pre_landing_pa</th>
+                    <th>num_battery</th>
+                    <th>weight_g</th>
+                    <th>remark</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="infobody">
+                <!-- <tr>
+                    <td>num_flight</td>
+                    <td>temp_takeoff</td>
+                    <td>temp_takeoff_pa</td>
+                    <td>temp_landing</td>
+                    <td>pre_landing_pa</td>
+                    <td>num_battery</td>
+                    <td>weight_g</td>
+                </tr> -->
+                <tr>
+                    <td colspan="9" align="center" style="text-align:center;">没有数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var returnT;
+    var curT;
+    $('#search').on('click', function () {
+        var data = {};
+        // var sTime;
+        // if($('#dt').val()==""){
+        //     sTime=0*1;
+        // }else{
+        //     sTime=(new Date($('#dt').val())).getTime()/1000;
+        // }
+        // console.log("sTime",sTime);
+        console.log("sTime", $('#dt').val().replace(/-/g, ''));
+        $.ajax({
+            // url:'http://121.199.53.63:8999/batch',
+            url: pointurl + 'batch',
+            type: 'get',
+            data: {
+                fid: encodeURI($('#fid').val()),
+                id: encodeURI($('#id').val()),
+                dt: $('#dt').val().replace(/-/g, ''),
+                // dt:sTime,
+                remark: Base64.encode($('#remark').val())
+            },
+            success: function (result) {
+                result = JSON.parse(result);
+                $('#infobody').empty();
+                if (result.err == 0) {
+                    console.log('正确', result);
+                    if (result.items.length > 0) {
+                        $.each(result.items, function (n, value) {
+                            // var newDate = new Date();
+                            // newDate.setTime(value.dt * 1000);
+                            // returnT=newDate.toLocaleString();
+                            // console.log(returnT);
+                            // formatDateTime(returnT);
+                            var tr = $('<tr><td>' + value.fid + '</td><td>' + value.id + '</td><td>' + value.dt + '</td><td>' + value.temp_takeoff + '</td><td>' + value.temp_takeoff_pa + '</td><td>' + value.temp_landing + '</td><td>' + value.pre_landing_pa + '</td><td>' + value.num_battery + '</td><td>' + value.weight_g + '</td><td>' + Base64.decode(value.remark) + '</td><td><span class="btn btn-primary" onclick="' + 'window.open(\'http:\/\/g1.xyitech.com:9999\/csv?id=' + value.id + '\')">下载</span></td></tr>');
+
+                            $("#infobody").append(tr);
+                        });
+                    } else {
+                        $('#infobody').empty().append('<tr><td colspan="9" align="center" style="text-align:center;">没有数据</td></tr>')
+                    }
+                } else {
+                    $('#infobody').empty().append('<tr><td colspan="9" align="center">诶？有问题了！人品不好做人要低调，(*￣^￣(*￣^￣(*￣^￣)</td></tr>')
+                }
+            },
+            error: function (result) {
+                $('#infobody').empty().append('<tr><td colspan="9" align="center">数据获取失败，但。。。。我并不抱歉，你来打我啊~~ㄟ( ▔, ▔ )ㄏ</td></tr>')
+            }
+        });
+    });
+    $('input[id]').on('keyup', function (e) {
+        if (e.keyCode == 13) {
+            $('#search').click();
+        }
+    });
+
+    var formatDateTime = function () {
+        // console.log(date) 
+        var date = new Date();
+        console.log(date)
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        // var h = date.getHours();  
+        // var minute = date.getMinutes();  
+        // minute = minute < 10 ? ('0' + minute) : minute;  
+        // t=y + '/' + m + '/' + d+' '+h+':'+minute; 
+
+        var t = y + '-' + m + '-' + d;
+        // return t; 
+        $('#dt').val(t)
+    };
+    formatDateTime();
+    // function downLoadData(valueid){
+    //     var cueid=valueid;
+    //     console.info("id is ", valueid);
+    //     window.open('http://g1.xyitech.com:9999/csv?id='+cueid)
+    // }
+</script>
+</body>
+</html>

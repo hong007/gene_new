@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>UAV Cloud</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/common.css" rel="stylesheet">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/commondata.js"></script>
+
+    <!-- Google Map -->
+    <script src="http://ditu.google.cn/maps/api/js?language=zh-CN&key=AIzaSyDEK4XKx_F2_R76kuxE_igcWbZpu1n14BQ&sensor=false"></script>
+
+    <script type="text/javascript" src="../plusins/nestable/jquery.nestable.js"></script>
+    <script type="text/javascript" src="../plusins/drag/jquery.dragsort.min.js"></script>
+    <style>
+        html, body, .container-fluid, .container-fluid > div {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        .map {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 9;
+            font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+        }
+        #container {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>
+<!--新版头部页面-->
+<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="maingoogle.html">主页面</a></li>
+                    <li>
+                        <a href="fline.html">航线记录</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            架次信息管理
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="flightcreate.html">架次信息录入</a>
+                            </li>
+                            <li>
+                                <a href="flightsearch.html">架次信息查看</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<!--<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#ffffff!important;">-->
+    <!--<nav class="navbar navbar-default">-->
+        <!--<div class="container">-->
+            <!--&lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;-->
+            <!--<div class="navbar-header">-->
+                <!--<a class="navbar-brand" href="#">迅蚁<small>Xunyi</small></a>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;-->
+            <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+                <!--<ul class="nav navbar-nav">-->
+
+                <!--</ul>-->
+                <!--<ul class="nav navbar-nav navbar-right">-->
+                    <!--&lt;!&ndash; <li><a href="main.html">主页面</a></li> &ndash;&gt;-->
+                    <!--<li><a href="maingoogle.html">主页面</a></li>-->
+                    <!--<li><a href="fline.html">航线记录</a></li>-->
+                    <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">架次信息管理<span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="flightcreate.html">架次信息录入</a></li>-->
+                            <!--<li><a href="flightsearch.html">架次信息查看</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</nav>-->
+<!--</header>-->
+<div class="container-fluid single-page noPadding">
+    <div class="row noMargin" style="position: relative;">
+        <div style="text-align: center;height: 50px;position: absolute;top: 60px;right: 10px;z-index: 10">
+            <div class="form-group col-sm-12" style="line-height: 34px;height: 40px;">
+                <input type="text" class="form-control" style="width: 300px;display: inline-block;margin-left: 10px;" id="id" placeholder="唯一标识">
+                <a id="search" class="btn btn-primary" title="是他是他就是他，我心目中的小哪吒">查看</a>
+            </div>
+        </div>
+        <div class="map" style="">
+            <div id="container" style="cursor: crosshair!important;" tabindex="0"></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="dlg-alert-label" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:150px;width: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <h3>有新用户申请控制权限</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="ok">
+                    授权
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="system" tabindex="-1" role="dialog" aria-labelledby="dlg-alert-label" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:150px;width: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <h3>确定要删除该数据?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../js/fline.js"></script>
+<style>
+    /* google map */
+    .view-link{
+        display: none;
+    }
+    .gm-style-cc{
+        display: none;
+    }
+    a[target] img{
+        display: none;
+    }
+</style>
+</html>

@@ -1,0 +1,840 @@
+body {
+  font-family: "微软雅黑", "Helvetica65", "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+}
+.allPush {
+  width: 100%;
+  height: 100%;
+}
+.allHeight {
+  height: 100%;
+}
+.allWidth {
+  width: 100%;
+}
+.noPadding {
+  padding: 0;
+}
+.noMargin {
+  margin: 0;
+}
+.warning {
+  color: #fff100;
+}
+.error {
+  color: #fc0b22;
+}
+.hideShowBtn {
+  width: 50px;
+  height: 20px;
+  position: absolute;
+  border-bottom-right-radius: 4px;484
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background-image: url('../images/arrow_down1.png');
+  background-size: auto 90%;
+  cursor: pointer;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  z-index: 3;
+}
+.hideShowBtn:hover {
+  opacity: 0.8;
+}
+.rotate90 {
+  transform: rotate(90deg);
+}
+.rotate180 {
+  transform: rotate(180deg);
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.rotate270 {
+  transform: rotate(270deg);
+}
+/* 无人机图标样式 */
+.main-flight-marker-hasNO {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+.main-flight-marker-hasNO div.img-div {
+  position: absolute;
+  padding: 0;
+  z-index: 10;
+  left: -50px;
+  top: -50px;
+  width: 100px;
+  height: 100px;
+}
+.main-flight-marker-hasNO div.img-div img {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+.main-flight-marker-hasNO div.id {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+  font-size: 8px !important;
+  color: #fff;
+  text-align: center;
+  z-index: 11;
+}
+.main-flight-marker-hasNO div.shadow {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  margin: auto;
+  position: absolute;
+  z-index: 9;
+}
+.main-flight-marker-hasNO div.heart-beng-beng {
+  animation: heart-beng-beng 1s infinite;
+  opacity: 0.4;
+  box-shadow: 0px 0px 70px 35px #F7B0AE;
+}
+.main-flight-marker-hasNO div.infos {
+  display: none;
+  background: white;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  padding: 10px 0px;
+  top: 20px;
+  left: 20px;
+  text-align: center;
+  opacity: 0.8;
+  line-height: 15px;
+  z-index: 12;
+}
+.main-flight-marker-hasNO div.infos p {
+  font-size: 10px;
+  color: #000;
+}
+.main-flight-marker-hasNO div.infos p span {
+  font-weight: bold;
+}
+/* 单机视角图 begin */
+.fly-uav {
+  height: 80px;
+  width: 80px;
+  position: relative;
+  /*left: -15px;
+  top: 5px;*/
+  left: -31px;
+  top: -7px;
+}
+.single-left {
+  background-image: url('../images/singlePage/zhuzhuang.png');
+  background-size: 100% 100%;
+}
+.single-left .single-left-block {
+  position: relative;
+  height: calc(12.5%);
+  padding: 20px;
+}
+.single-left .single-left-block p {
+  font-size: 14px;
+}
+.single-left .single-left-block div {
+  text-align: center;
+}
+.single-left .single-left-block div span {
+  font-size: 36px;
+}
+.single-left .single-left-block div small {
+  font-size: 16px;
+}
+.single-left .single-left-block img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.single-center-middle {
+  // height: 100px;
+  height: auto;
+  background-image: url("../images/singlePage/shujubg.png");
+  background-size: 100% 100%;
+  position: absolute;
+  bottom: 310px;
+  left: 0;
+  right: 0;
+}
+.single-center-middle .block {
+  width: 24%;
+  padding: 5px;
+  float: left;
+}
+.single-center-middle .block p {
+  margin-bottom: 0;
+}
+.single-center-middle .block:first-child {
+  margin-left: 10px;
+}
+.top-status{
+  position: absolute;
+  top: -84px;
+  /*left: -6px;*/
+  left: 2px;
+  width:240px;
+  color:red;
+}
+.top-status p{
+  margin:0;
+}
+.communicate-cont p{
+  color:#000;
+  height:24px;
+  line-height:24px;
+  margin:0;
+}
+.ss-span{
+  text-align: right;
+  /*width:80px;*/
+  display: inline-block;
+}
+.singnal-status{
+  width:16px;
+  height:16px;
+  display: inline-block;
+  border-radius:100%;
+  background-color: green;
+  margin-right:22px;
+  vertical-align: -2px;
+}
+.singnal-status-gp{
+
+}
+.singnal-error{
+  background-color: red;
+}
+.single-center-left {
+  left: 10px;
+  top: 94px;
+  width: 38px;
+}
+.single-center-left .left-icon {
+  width: 38px;
+  height: 50px;
+  cursor: pointer;
+}
+.left-icon.clicking img{
+  opacity: 0.6;
+}
+.single-center-top {
+  position: absolute;
+  top: 0;
+  right: calc(25%);
+}
+.single-center-top .menu {
+  position: relative;
+  background-image: url("../images/singlePage/menux.png");
+  background-size: 100% 100%;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.single-center-top .menu .menu-li {
+  text-align: center;
+  display: inline-block;
+  width: 110px;
+  height: 60px;
+  line-height: 60px;
+  margin: 0;
+  position: relative;
+  padding-left: 5px;
+  cursor: pointer;
+}
+.single-center-top .menu .menu-li img.left {
+  position: absolute;
+  left: -5px;
+  height: 100%;
+  width: 2px;
+}
+.single-center-top .menu .menu-li img.bottom {
+  position: absolute;
+  bottom: -5px;
+  left: -2px;
+  width: 100%;
+  height: 5px;
+}
+.single-center-top .menu .menu-li .sub-menu {
+  display: none;
+  width: 100%;
+  position: absolute;
+  padding-left: 0;
+  background-image: url("../images/singlePage/menux.png");
+  background-size: 100% 100%;
+  left: -5px;
+  top: 60px;
+}
+.single-center-top .menu .menu-li .sub-menu li {
+  font-size: 14px;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+}
+.single-center-top .menu .menu-li .sub-menu li:hover {
+  background-image: url("../images/singlePage/hover.png");
+  background-size: 100% 100%;
+}
+.single-center-top .menu .selected {
+  background-image: url("../images/singlePage/hover.png");
+  background-size: 100% 100%;
+}
+.single-center-top .menu .menu-li:hover {
+  background-image: url("../images/singlePage/hover.png");
+  background-size: 100% 100%;
+}
+.single-center-bottom {
+  position: absolute;
+  height: 300px;
+  bottom: 0;
+}
+.single-center-bottom .left {
+  height: 100%;
+  width: 50%;
+  float: left;
+  position: relative;
+}
+.single-center-bottom .left .left-main {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+}
+.single-center-bottom .left .left-main .left-main-sky {
+  height: 45%;
+}
+.single-center-bottom .left .left-main .left-main-sky .compass-body {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  float: right;
+  background-image: url('../images/singlePage/compass_body.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+}
+.single-center-bottom .left .left-main .left-main-sky .compass-body .compass {
+  width: 60px;
+  height: 60px;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  background-image: url('../images/singlePage/compass.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+}
+.single-center-bottom .left .left-main .left-main-sky .compass-body .compass-arrow {
+  width: 28px;
+  height: 25px;
+  top: 26px;
+  right: 27px;
+  position: absolute;
+  background-image: url('../images/singlePage/compass_arrow.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  transform: rotate(-45deg);
+}
+.single-center-bottom .left .left-main .left-main-flight {
+  height: 120px;
+  width: 80px;
+  background-image: url('../images/singlePage/single_center_bottom_flight.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 20px;
+  margin: 0 auto;
+  transform: rotateX(65deg) rotateZ(90deg);
+}
+.single-center-bottom .left canvas {
+  width: 100%;
+  height: 100%;
+  background-color: #1F3B6B;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 1;
+}
+.single-center-bottom .right {
+  height: 100%;
+  width: 50%;
+  float: right;
+  background-image: url('../images/singlePage/zhuzhuang.png');
+  background-size: 100% 100%;
+}
+.single-center-bottom .right table {
+  width: 100%;
+  height: 300px;
+}
+.single-center-bottom .right table tr {
+  width: 25%;
+  vertical-align: middle;
+}
+.single-center-bottom .right table tr td {
+  margin: 0;
+  text-align: center;
+  width: 49%;
+  line-height: 39px;
+}
+.single-center-bottom .right table tr td img {
+  width: 45px;
+  float: left;
+  margin-left: 20px;
+}
+.map-marker {
+  position: absolute;
+  width: 19px;
+  height: 33px;
+  opacity: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+.map-marker img {
+  height: 33px;
+}
+.map-marker .point {
+  margin-left: -7px;
+}
+.map-marker.point img {
+  margin-left: -7px !important;
+}
+.map-marker.point div {
+  color: black;
+  top: 2px;
+}
+.map-marker div {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+}
+.single-right {
+  background-image: url('../images/singlePage/zhuzhuang.png');
+  background-size: 100% 100%;
+}
+.single-right .single-right-up {
+  overflow-y: auto;
+}
+.single-right .single-right-up .single-right-up-sub {
+  position: relative;
+  margin: 20px;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden {
+  display: none;
+  background-image: url('../images/singlePage/randos.png');
+  background-size: 100% 100%;
+  margin: -20px;
+  padding: 20px;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden p {
+  margin: 10px;
+  text-align: center;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden table {
+  margin: auto;
+  padding: 0;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden table .info {
+  width: 35%;
+  text-align: right;
+  padding-right: 15px;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden table .input {
+  width: 65%;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden table .input input {
+  color: #000000;
+  width: 70%;
+}
+.single-right .single-right-up .single-right-up-sub .single-right-up-hidden table .input span{
+  margin-left: 5px;
+}
+.single-right .single-right-up .single-right-up-sub .sanjiao {
+  height: 20px;
+  width: 20px;
+  float: right;
+  position: absolute;
+  top: 23px;
+  right: 0px;
+  bottom: 0;
+  cursor: pointer;
+}
+.single-right .single-right-up .single-right-up-sub .glyphicon-plus-sign{
+  right: 20px;
+}
+.single-right .single-right-up .single-right-up-sub.select {
+  position: relative;
+}
+.single-right .single-right-up .single-right-up-sub.select .single-right-up-block {
+  background-image: url('../images/singlePage/6blue.png');
+  margin: 0px -10px;
+  line-height: 50px;
+}
+.single-right .single-right-up .single-right-up-sub.select .single-right-up-hidden {
+  display: block;
+}
+.single-right .single-right-up .single-right-up-block {
+  cursor: pointer;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 0px 20px;
+  line-height: 60px;
+  background-image: url('../images/singlePage/rightrouter.png');
+  font-size: 16px;
+}
+.single-right .single-right-up .single-right-up-block .number {
+  margin-right: 20px;
+}
+.single-right .single-right-up .sanjiao {
+  height: 20px;
+  width: 20px;
+  float: right;
+  position: absolute;
+  top: 20px !important;
+  right: 0px;
+  bottom: 0;
+  cursor: pointer;
+}
+.single-right .single-right-up .sanjiao:hover {
+  color: #FFF;
+}
+.single-right .single-right-down {
+  position: relative;
+  height: 125px;
+  bottom: 0;
+}
+.single-right .single-right-down img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+/* 单机视角图 end */
+@media screen and (max-width: 1400px) and (min-width: 1024px) {
+  .single-center-middle {
+    bottom: 50px;
+  }
+  .single-center-bottom {
+    bottom: -270px;
+  }
+  .single-md-2 {
+    width: 120px;
+  }
+  .single-md-2 .single-left-block {
+    padding: 10px;
+  }
+  .single-md-2 .single-left-block p {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  .single-md-2 .single-left-block div span {
+    font-size: 30px;
+  }
+  .single-center-left {
+    margin-left: 130px;
+  }
+  .single-md-3 {
+    width: 200px;
+  }
+}
+@media screen and (max-width: 1023px) {
+  .single-md-2 {
+    width: 80px;
+  }
+  .single-md-2 .single-left-block p {
+    display: none;
+  }
+  .single-center-middle {
+    bottom: 50px;
+    margin-left: 85px;
+    width: 80%;
+  }
+  .single-center-bottom {
+    bottom: -270px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 70%;
+  }
+  .single-md-2 {
+    width: 120px;
+  }
+  .single-md-2 .single-left-block {
+    padding: 10px;
+  }
+  .single-md-2 .single-left-block p {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  .single-md-2 .single-left-block div span {
+    font-size: 30px;
+  }
+  .single-center-top {
+    right: 120px;
+  }
+  .single-center-left {
+    margin-left: 90px;
+  }
+  .single-md-3 {
+    width: 120px;
+  }
+  .single-md-3 .single-right-up {
+    height: 100%;
+  }
+  .single-md-3 .single-right-down {
+    display: none;
+  }
+}
+.real-time-data {
+  width: 100%;
+  height: 420px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+.real-time-data .data-info .data-setting {
+  margin-top: 50px;
+}
+.real-time-data .data-info .data-setting div {
+  margin-bottom: 10px;
+}
+.real-time-data .data-info span {
+  font-size: 14px;
+}
+.real-time-data .data-info select {
+  padding: 5px;
+  width: 120px;
+}
+/*.main-margin-top{
+  top: 70px!important;
+}*/
+.main-input-search {
+  width: 400px;
+  height: 45px;
+  position: relative;
+  top: 20px;
+  left: 20px;
+  background-image: url('../images/main/inputbottom.png');
+  background-size: 100% 100%;
+}
+.main-input-search input {
+  width: 300px;
+  margin-left: 40px;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+}
+.main-input-search .main-input-search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 60px;
+  background-image: url('../images/main/inputsearch.png');
+  background-size: 100% 100%;
+  cursor: pointer;
+}
+.main-flight-no {
+  position: absolute;
+  right: 490px;
+  top: 20px;
+  width: 80px;
+  line-height: 45px;
+  background-image: url('../images/main/box.png');
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  font-size: 20px;
+  color: #444;
+  font-weight: bold;
+  padding-left: 50px;
+  cursor: pointer;
+}
+.main-package-no {
+  position: absolute;
+  right: 380px;
+  top: 20px;
+  width: 80px;
+  height: 45px;
+  line-height: 45px;
+  background-image: url('../images/main/flightblue.png');
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  font-size: 20px;
+  color: #444;
+  padding-left: 50px ;
+  font-weight: bold;
+  cursor: pointer;
+}
+.flight-list{
+  display: none;
+  position: absolute;
+  right: 313px;
+  top: 92px;
+  color: #444;
+  width: 220px;
+  height: 211px;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 8px;
+  border:1px solid #ddd;
+  background: #fff;
+  // overflow: auto;
+}
+.tbody-container{
+  height: 155px;
+  overflow: auto;
+}
+.thead-container tr th{
+  border:none!important;
+}
+.flight-list tr th,
+.flight-list tr td{
+  text-align: center;
+}
+
+.flight-list tr th:last-child,
+.flight-list tr td:last-child{
+  padding: 8px 0;
+  white-space: nowrap;
+}
+.location-span{
+  display: inline-block;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  background: url(../images/location.png) no-repeat center;
+  background-size: contain;;
+}
+.arrow-container{
+  position: absolute;
+  top: -41px;
+  left: 80px;
+}
+.arrow{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border:15px solid transparent;
+  border-bottom:25px solid #ddd;
+
+}
+.arrowtips{
+  position: absolute;
+  top: -13px;
+  left: -15px;
+  border:15px solid transparent;
+  border-bottom:25px solid white;
+}
+.main-map-change {
+  position: absolute;
+  bottom: 5px;
+  right: 25px;
+  height: 100px;
+}
+.main-map-change .mapList {
+  position: relative;
+  padding: 10px;
+}
+.main-map-change .mapList .map1 {
+  position: absolute;
+  right: 10px;
+  width: 80px;
+  height: 55px;
+  background: url("../images/main/map_nor.png") no-repeat;
+  background-size: 100% 100%;
+  z-index: 99;
+  cursor: pointer;
+}
+.main-map-change .mapList .map1:hover {
+  background: url("../images/main/map_sel.png") no-repeat;
+  background-size: 100% 100%;
+}
+.main-map-change .mapList .map1.selected {
+  background: url("../images/main/map_sel.png") no-repeat;
+  background-size: 100% 100%;
+  z-index: 99;
+}
+.main-map-change .mapList .map2 {
+  position: absolute;
+  right: 10px;
+  width: 80px;
+  height: 55px;
+  background: url("../images/main/satellite_map_nor.png") no-repeat;
+  background-size: 100% 100%;
+  z-index: 99;
+  cursor: pointer;
+}
+.main-map-change .mapList .map2:hover {
+  background: url("../images/main/satellite_map_sel.png") no-repeat;
+  background-size: 100% 100%;
+}
+.main-map-change .mapList .map2.selected {
+  background: url("../images/main/satellite_map_sel.png") no-repeat;
+  background-size: 100% 100%;
+  z-index: 99;
+  right: 10px;
+}
+.main-map-change .mapList .under {
+  z-index: 98!important;
+}
+.main-map-change .mapList:hover {
+  height: 75px;
+  width: 200px;
+  background: url("../images/main/allpushbg.png") no-repeat;
+  background-size: 100% 100%;
+  padding: 10px;
+  background-position-x: 10px;
+}
+.main-map-change .mapList:hover .under {
+  animation: leftEnter 0.3s ease-in-out 0s 1;
+  right: 100px;
+}
+
+#context-menu{
+  position: absolute;
+  top: 0;
+  left: -200px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 0px;
+  
+}
+#context-menu div{
+  height: 30px;
+  line-height: 30px;
+  width:auto;
+  padding-left:10px;
+  padding-right:10px;
+}
+#context-menu div:hover{
+  background-color: #eeeeee;
+  cursor: pointer;
+}

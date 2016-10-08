@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>云数据导出</title>
+</head>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="../css/common.css" rel="stylesheet"> -->
+<script src="../js/jquery.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<!-- <script src="../js/commondata.js"></script> -->
+<style>
+.clouddata-form .control-label {
+    padding-right: 0;
+}
+
+tr th,
+tr td {
+    text-align: center;
+}
+</style>
+
+<body>
+    <p data-target="#clouddata" data-toggle="modal" style="margin-top:30px;"><a href="javascript:void(0)">手动录入试验场信息</a></p>
+    <!-- 云数据导出 -->
+    <div aria-hidden="true" aria-labelledby="dlg-alert-label" class="modal fade" id="clouddata" role="dialog" tabindex="-1">
+        <!-- <div class="modal fade" id="clouddata" tabindex="-1" role="dialog" aria-labelledby="dlg-alert-label" aria-hidden="true" style="display:block;opacity: 1;"> -->
+        <div class="modal-dialog" style="margin-top:150px;width: 500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                            云数据导出
+                        </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal clouddata-form" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                架次编号：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="num_flight" placeholder="请输入架次编号" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                起飞场温度：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="temp_takeoff" placeholder="请输入起飞场温度" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                起飞场气压：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="temp_takeoff_pa" placeholder="请输入起飞场气压" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                着陆场温度：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="temp_landing" placeholder="请输入着陆场温度" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                着陆场气压：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="pre_landing_pa" placeholder="请输入着陆场气压" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                电池编号：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="num_battery" placeholder="请输入电池编号" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                起飞重量：
+                            </label>
+                            <div class="col-sm-7">
+                                <input class="form-control" id="weight_g" placeholder="请输入起飞重量" type="text">
+                                </input>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary ok" id="saveAirLine" type="button">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover table-line">
+        <thead>
+            <tr>
+                <th>架次编号</th>
+                <th>起飞场温度</th>
+                <th>起飞场气压</th>
+                <th>着陆场温度</th>
+                <th>着陆场气压</th>
+                <th>电池编号</th>
+                <th>起飞重量</th>
+                <!--  <th>时间戳</th>
+                <th>无人机ID</th>
+                <th>电池电压</th>
+                <th>电池电流</th>
+                <th>电池余量</th>
+                <th>北向坐标</th>
+                <th>东向坐标</th>
+                <th>天向坐标</th>
+                <th>北向速度</th>
+                <th>东向速度</th>
+                <th>天向速度</th>
+                <th>飞行距离</th>
+                <th>相对高度</th>
+                <th>航向</th> -->
+            </tr>
+        </thead>
+        <tbody id="infobodyByhand">
+            <tr>
+                <td>num_flight</td>
+                <td>temp_takeoff</td>
+                <td>temp_takeoff_pa</td>
+                <td>temp_landing</td>
+                <td>pre_landing_pa</td>
+                <td>num_battery</td>
+                <td>weight_g</td>
+                <!-- <td>time_std_s</td>
+                <td>id_uav_xyi</td>
+                <td>voltages</td>
+                <td>current_battery</td>
+                <td>battery_remaining</td>
+                <td>x</td>
+                <td>y</td>
+                <td>z</td>
+                <td>vx</td>
+                <td>vy</td>
+                <td>vz</td>
+                <td>dis_m</td>
+                <td>relative_alt</td>
+                <td>hdg</td> -->
+            </tr>
+            <!--  <tr>
+                <td colspan="9" align="center" style="text-align:center;">没有数据</td>
+            </tr> -->
+        </tbody>
+    </table>
+    <table class="table table-hover table-line">
+        <thead>
+            <tr>
+                <!--  <th>架次编号</th>
+                <th>起飞场温度</th>
+                <th>起飞场气压</th>
+                <th>着陆场温度</th>
+                <th>着陆场气压</th>
+                <th>电池编号</th>
+                <th>起飞重量</th> -->
+                <th>时间戳</th>
+                <th>无人机ID</th>
+                <th>电池电压</th>
+                <th>电池电流</th>
+                <th>电池余量</th>
+                <th>北向坐标</th>
+                <th>东向坐标</th>
+                <th>天向坐标</th>
+                <th>北向速度</th>
+                <th>东向速度</th>
+                <th>天向速度</th>
+                <th>飞行距离</th>
+                <th>相对高度</th>
+                <th>航向</th>
+            </tr>
+        </thead>
+        <tbody id="infobody">
+            <tr>
+                <!-- <td>num_flight</td>
+                <td>temp_takeoff</td>
+                <td>temp_takeoff_pa</td>
+                <td>temp_landing</td>
+                <td>pre_landing_pa</td>
+                <td>num_battery</td>
+                <td>weight_g</td> -->
+                <td>time_std_s</td>
+                <td>id_uav_xyi</td>
+                <td>voltages</td>
+                <td>current_battery</td>
+                <td>battery_remaining</td>
+                <td>x</td>
+                <td>y</td>
+                <td>z</td>
+                <td>vx</td>
+                <td>vy</td>
+                <td>vz</td>
+                <td>dis_m</td>
+                <td>relative_alt</td>
+                <td>hdg</td>
+            </tr>
+            <!--  <tr>
+                <td colspan="9" align="center" style="text-align:center;">没有数据</td>
+            </tr> -->
+        </tbody>
+    </table>
+    <footer style="width: 100%;height: 50px;position: fixed;bottom: 0;line-height: 50px;text-align: center;color: #ffffff;">
+        <span>生活中，最不能缺的就是乐趣！</span>
+    </footer>
+    <script>
+    $('#submit').on('click', function() {
+        var data = {}
+        if ($('#num_flight').val() == "") {
+            alert('请输入架次批号');
+            return;
+        } else {
+            data['num_flight'] = $('#num_flight').val();
+        }
+        if ($('#temp_takeoff').val() == "") {
+            alert('请输入起飞场温度');
+            return;
+        } else {
+            data['fid'] = $('#temp_takeoff').val();
+        }
+        if ($('#temp_takeoff_pa').val() == "") {
+            alert('请输入起飞场气压');
+            return;
+        } else {
+            data['temp_takeoff_pa'] = $('#temp_takeoff_pa').val();
+        }
+        if ($('#temp_landing').val() == "") {
+            alert('请输入着陆场温度');
+            return;
+        } else {
+            data['temp_landing'] = $('#temp_landing').val();
+        }
+        if ($('#pre_landing_pa').val() == "") {
+            alert('请输入着陆场气压');
+            return;
+        } else {
+            data['pre_landing_pa'] = $('#pre_landing_pa').val();
+        }
+        if ($('#num_battery').val() == "") {
+            alert('请输入电池编号');
+            return;
+        } else {
+            data['num_battery'] = $('#num_battery').val();
+        }
+        if ($('#weight_g').val() == "") {
+            alert('请输入起飞重量');
+            return;
+        } else {
+            data['weight_g'] = $('#weight_g').val();
+        }
+        // var date = new Date();
+        // // data['dt'] = (date.getTime() / 1000).toFixed(0);
+        // var y = date.getFullYear();  
+        // var m = date.getMonth() + 1;  
+        // m = m < 10 ? ('0' + m) : m;  
+        // var d = date.getDate();  
+        // d = d < 10 ? ('0' + d) : d;  
+        // t=y  + m  + d; 
+
+        // data['dt'] = t;
+        console.log("data is ", data);
+        $.ajax({
+            // url:'http://121.199.53.63:9999/submitbatch',
+            url: pointurl + 'submitbatch',
+            type: 'post',
+            data: data,
+            success: function(result) {
+                result = JSON.parse(result);
+                if (result.err == 0) {
+                    alert('添加成功');
+                    $('input,textarea').val('');
+                } else {
+                    alert('错误：' + result.msg);
+                }
+            }
+        });
+    });
+    var targetData;
+
+    function mergeData(data1, data2) {
+        if (data1.time_std_s == data2.time_std_s) {
+            var newData = $.extends({}, data1, data2);
+            dataCloud(newData);
+        }
+    }
+
+    function dataCloud(res) {
+        targetData = res.data;
+        $.each(targetData, function(n, value) {
+            var tr = $('<tr><td>' + value.time_std_s + '</td><td>' + value.id_uav_xyi + '</td><td>' + value.voltages + '</td><td>' + value.battery_remaining + '</td><td>' + value.x + '</td><td>' + value.y + '</td><td>' + value.z + '</td><td>' + value.vx + '</td><td>' + value.vy + '</td><td>' + value.vz + '</td><td>' + value.dis_m + '</td><td>' + value.relative_alt + '</td><td>' + value.hdg + '</td></tr>');
+            $("#infobody").append(tr);
+        });
+    }
+    </script>
+</body>
+<form class="form-horizontal clouddata-form" role="form" style="width: 60%;margin:0 auto;">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            飞行器ID：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="id" placeholder="请输入飞行器ID" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            架次名称：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="id" placeholder="请输入架次名称" type="text">
+            </input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            时间：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="dt" placeholder="请输入时间" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            架次编号：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="num_flight" placeholder="请输入架次编号" type="text">
+            </input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            架次编号：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="num_flight" placeholder="请输入架次编号" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            起飞场温度：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="temp_takeoff" placeholder="请输入起飞场温度" type="text">
+            </input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            起飞场气压：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="temp_takeoff_pa" placeholder="请输入起飞场气压" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            着陆场温度：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="temp_landing" placeholder="请输入着陆场温度" type="text">
+            </input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            着陆场气压：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="pre_landing_pa" placeholder="请输入着陆场气压" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            电池编号：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="num_battery" placeholder="请输入电池编号" type="text">
+            </input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            起飞重量：
+        </label>
+        <div class="col-sm-3">
+            <input class="form-control" id="weight_g" placeholder="请输入起飞重量" type="text">
+            </input>
+        </div>
+        <label class="col-sm-3 control-label">
+            备注信息：
+        </label>
+        <div class="col-sm-3">
+             <textarea type="text" class="form-control" id="remark" placeholder="备注信息"></textarea>
+        </div>
+       
+    </div>
+    <div class="form-group">
+         <div class="col-sm-2">
+            <button class="btn btn-primary ok" id="saveAirLine" type="button">提交</button>
+        </div>
+    </div>
+</form>
+
+</html>

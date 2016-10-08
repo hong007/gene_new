@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>系统全景图</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/common.css" rel="stylesheet">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/commondata.js"></script>
+    <!-- Google Map -->
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+    <!-- <script defer src="http://maps.google.cn/maps/api/js?language=zh-CN&key=AIzaSyDEK4XKx_F2_R76kuxE_igcWbZpu1n14BQ&callback=initMap"></script> -->
+    <script src="http://ditu.google.cn/maps/api/js?language=zh-CN&libraries=geometry,drawing&key=AIzaSyDEK4XKx_F2_R76kuxE_igcWbZpu1n14BQ&sensor=false"></script>
+    <script type="text/javascript" src="../js/CustomMapMarker.js"></script>
+    <!-- <script type="text/javascript" src="../js/MapComFn.js"></script> -->
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0.6;
+            z-index: 9999;
+            color: #111111 !important;
+        }
+
+        header:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes heart-beng-beng {
+            0% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0.4;
+            }
+        }
+
+        .main-control-button {
+            width: 49%;
+            background: #00A0E9;
+            height: 23px;
+            width: 33px;
+            color: white;
+            border: 0;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        .main-control-button:hover {
+            background: #0093C6;
+        }
+
+        /* google map */
+
+        .view-link {
+            display: none;
+        }
+
+        .gm-style-cc {
+            display: none;
+        }
+
+        a[target] img {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<!--<header style="">
+<nav class="navbar navbar-default">
+    <div class="container">
+        &lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">迅蚁<small>Xunyi</small></a>
+        </div>
+
+        &lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="pages/single.html">单机操作</a></li>
+                <li><a href="pages/realtimedata.html">实时数据统计</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">功能操作<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">高科技1</a></li>
+                        <li><a href="#">高科技2</a></li>
+                        <li><a href="#">高科技3</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">数据统计<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">高科技4</a></li>
+                        <li><a href="#">高科技5</a></li>
+                        <li><a href="#">高科技6</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</header>-->
+
+<!--新版maingoogle页面-->
+<!--<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">-->
+<!--<nav class="navbar navbar-default">-->
+<!--<div class="container">-->
+<!--&lt;!&ndash;<div class="navbar-header">&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="navbar-brand" href="#">&ndash;&gt;-->
+<!--&lt;!&ndash;迅蚁&ndash;&gt;-->
+<!--&lt;!&ndash;<small>Xunyi</small>&ndash;&gt;-->
+<!--&lt;!&ndash;</a>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+<!--<ul class="nav navbar-nav"></ul>-->
+<!--<ul class="nav navbar-nav navbar-right">-->
+<!--&lt;!&ndash;<li>&ndash;&gt;-->
+<!--&lt;!&ndash;<a target="_blank" href="../maingoogle.html">主页面</a>&ndash;&gt;-->
+<!--&lt;!&ndash;</li>&ndash;&gt;-->
+<!--<li>-->
+<!--<a href="fline.html">航线记录</a>-->
+<!--</li>-->
+<!--<li class="dropdown">-->
+<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+<!--aria-expanded="false">-->
+<!--架次信息管理-->
+<!--<span class="caret"></span>-->
+<!--</a>-->
+<!--<ul class="dropdown-menu">-->
+<!--<li>-->
+<!--<a href="flightcreate.html">架次信息录入</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="flightsearch.html">架次信息查看</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--</nav>-->
+<!--</header>-->
+<div id="container" class="allPush" tabindex="0"></div>
+<div class="main-input-search main-margin-top" style="">
+    <input type="text" id="inputSearch" placeholder="输入飞机编号或目的地名称">
+    <div class="main-input-search-btn"></div>
+</div>
+<div id="package-no" class="main-flight-no main-margin-top"></div>
+<div id="flight-no" class="main-package-no main-margin-top">0</div>
+<!--<div id="flight-no" class="main-package-no main-margin-top" style="top:60px;">0</div>-->
+<div class="flight-list" id="flightList">
+    <!--<div class="flight-list" id="flightList" style="top:128px;">-->
+    <div class="arrow-container">
+        <div class="arrow">
+            <div class="arrowtips"></div>
+        </div>
+    </div>
+    <div class="thead-container">
+        <table class="table table-hover table-line flight-table" style="margin-bottom: 0;">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>上线时刻</th>
+                <th>定位</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="tbody-container">
+        <table class="table table-hover table-line flight-table">
+            <!-- <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>上线时刻</th>
+                    <th>定位</th>
+                </tr>
+            </thead> -->
+            <tbody id="flightListTable">
+            <!-- <tr>
+            <td>12</td>
+            <td>2016/08/01  12:00:12</td>
+            <td><span class="location-span"></span></td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>2016/08/01  12:00:12</td>
+            <td><span class="location-span"></span></td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>2016/08/01  12:00:12</td>
+            <td><span class="location-span"></span></td>
+        </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <!--   <table class="table table-hover table-line flight-table">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>上线时刻</th>
+                  <th>定位</th>
+              </tr>
+          </thead>
+          <tbody id="flightListTable">
+              <tr>
+              <td>12</td>
+              <td>2016/08/01  12:00:12</td>
+              <td><span class="location-span"></span></td>
+          </tr>
+          <tr>
+              <td>12</td>
+              <td>2016/08/01  12:00:12</td>
+              <td><span class="location-span"></span></td>
+          </tr>
+          <tr>
+              <td>12</td>
+              <td>2016/08/01  12:00:12</td>
+              <td><span class="location-span"></span></td>
+          </tr>
+          </tbody>
+      </table> -->
+</div>
+<a id="templateTarget" style="display: none;" target="_blank"></a>
+<!--<div class="single-center-top main-margin-top" style="color: #bbfbfc!important;right: 0;">
+<ul class="menu">
+    <li class="menu-li"
+        onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}">
+        操控<img class="left" src="../images/singlePage/groupline.png"><img
+            style="width: calc(100% + 20px);left:-10px;list-style: none;" class="bottom"
+            src="../images/singlePage/c.png">
+        <ul class="sub-menu" style="width: calc(100% + 10px);">
+            <li onclick="uavStart()">开始起飞</li>
+            <li onclick="uavStop()">应急着陆</li>
+            <li>暂定自主任务</li>
+            <li>恢复自主任务</li>
+            <li>人工操作</li>
+        </ul>
+    </li>
+    <li class="menu-li"
+        onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}"
+    >数据<img class="left" src="../images/singlePage/groupline.png"><img
+            style="width: calc(100% + 10px);" class="bottom" src="../images/singlePage/a.png">
+        <ul class="sub-menu" style="width: calc(100% + 10px);list-style: none;">
+            <li><a href="/pages/realtimedata.html?1">实时数据分析</a></li> &lt;!&ndash;onclick="realTimeData()"&ndash;&gt;
+        </ul>
+    </li>
+    <li class="menu-li"
+        onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}"
+    >设置<img class="left" src="../images/singlePage/groupline.png"><img
+            style="width: calc(100% + 10px);" class="bottom" src="../images/singlePage/b.png">
+        <ul class="sub-menu" style="width: calc(100% + 10px);list-style: none;">
+            <li onclick="backToMain()">回到主页</li>
+        </ul>
+    </li>
+</ul>
+</div>-->
+<!--<div class="main-map-change" style="display: block!important;">
+<div class="mapList">
+    <div class="map1 selected" onclick="change_base_map(true,this);">&nbsp;</div>
+    <div class="map2 under" onclick="change_base_map(false,this);">&nbsp;</div>
+</div>
+</div>-->
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="dlg-alert-label" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:150px;width: 300px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <h3>请输入口令</h3>
+                <input type="text" id="pwd" class="form-control" style="width: 250px;" placeholder="口令：地瓜地瓜，我是土豆！"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="ok">
+                    芝麻开门
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    点错了
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../js/maingoogle.js"></script>
+<script type="text/javascript">
+    initMap();
+</script>
+
+</html>

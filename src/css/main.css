@@ -1,0 +1,296 @@
+body {
+    font-family: "微软雅黑", "Helvetica65", "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+}
+a:hover {
+    text-decoration: none
+}
+
+a, img {
+    -webkit-touch-callout: none;
+}
+
+label {
+    cursor: pointer
+}
+
+ul li, .ol li {
+    list-style: none
+}
+
+em, cite, i {
+    font-style: normal
+}
+
+button {
+    background: none;
+    border: none;
+    outline: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    -webkit-appearance: none;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+textarea {
+    resize: none;
+}
+
+/* 通用样式 */
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.fl {
+    float: left !important;
+}
+
+.fr {
+    float: right !important;
+}
+
+.txtct {
+    text-align: center;
+}
+
+.txtlt {
+    text-align: left;
+}
+
+.txtrt {
+    text-align: right;
+}
+
+.allHeight {
+    height: 100%;
+}
+
+.allWidth {
+    width: 100%;
+}
+
+.noPadding {
+    padding: 0;
+}
+
+.noMargin {
+    margin: 0;
+}
+
+.warning {
+    color: #fff100;
+}
+
+.error {
+    color: #fc0b22;
+}
+
+.allPush {
+    height: 100%;
+    WIDTH: 100%;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    /*color: #111111 !important;*/
+}
+.head .navbar{
+    background: transparent;
+    border:none;
+}
+.logo {
+    width: 165px;
+    height:60px;
+    padding: 0;
+    margin-left:10px;
+    background: url("../images/new/logo01.png") no-repeat center center;
+    background-size: contain;
+}
+.version-area{
+    height: 60px;
+    line-height:60px;
+    display: inline-block;
+    color: #fff;
+    margin-right:30px;
+}
+.version-area:hover{
+    text-decoration: none;
+    color:#fff;
+}
+
+.bg-content{
+    background: url("../images/new/bg.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+.logo-tips-container {
+    position: absolute;
+    right: 115px;
+    bottom: 30px;
+    /*width: 360px;*/
+    /*height: 100px;*/
+    margin: auto;
+    z-index: 9998;
+    color: #fff;
+    text-align: center;
+}
+
+.logo-tips-content {
+    background: url("../images/new/logotips.png") no-repeat center center;
+    background-size: contain;
+    width: 330px;
+    height: 150px;
+}
+
+.gobtn {
+    position: absolute;
+    right: -38px;
+    bottom: 24px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    background: url("../images/new/gobtn.png") no-repeat center center;
+    background-size: contain;
+}
+/*监控页面*/
+.s-head{
+
+}
+.menu-item{
+    display: inline-block;
+    white-space: nowrap;
+    width:47px;
+    text-align: center;
+    color:#A09F9F;
+    position: relative;
+}
+.menu-item.active,.menu-item:hover{
+    color:#313131;
+    border-bottom:2px solid #FFCD00;
+}
+.sub-menu{
+    width:130px;
+    position: absolute;
+    top:0;
+    left:0;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.4);
+}
+.sub-menu li{
+    background: transparent;
+color:#2A2A2A;
+    height:50px;
+}
+.sub-menu li:hover{
+    background: #FFCD00;
+    color:#fff;
+}
+
+.container-fluid,
+.container-fluid > div {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9;
+    font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+}
+
+#container {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+
+.single-page {
+    color: #bbfbfc;
+}
+
+.single-page .row > div:not(:first-child) {
+    position: absolute;
+    z-index: 50;
+}
+
+.control-label {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.single-page .col-sm-9 {
+    padding-left: 0;
+}
+
+.single-page .table-line th,
+.single-page .table-line td {
+    text-align: center;
+}
+
+.single-page .table-line td {
+    cursor: pointer;
+}
+
+.single-page .table-line tr th:first-child,
+.single-page .table-line tr td:first-child {
+    text-align: left;
+}
+
+/* 日志滚动css */
+
+.txtMarquee-top {
+    width: 240px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 96px;
+    height: 100px;
+    color: red;
+    /*border: 1px solid #ccc;*/
+}
+
+.infoList {
+    padding: 0 0 0 5px;
+}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>架次信息管理</title>
+</head>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/common.css" rel="stylesheet">
+<script src="../js/jquery.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/commondata.js"></script>
+<script src="../plusins/base64.min.js"></script>
+<style>
+.bootstrap-datetimepicker-widget {
+    left: 37%!important;
+    width: 300px;
+}
+
+.control-label {
+    color: #fff;
+}
+</style>
+
+<body style="background-image: url('../images/bg/bg138.jpg');background-size: 100% auto;background-repeat: no-repeat;">
+<!--新版头部页面-->
+<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav"></ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="maingoogle.html">主页面</a></li>
+                    <li>
+                        <a href="fline.html">航线记录</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            架次信息管理
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="flightcreate.html">架次信息录入</a>
+                            </li>
+                            <li>
+                                <a href="flightsearch.html">架次信息查看</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+    <!--<header style="position: absolute;top: 0;left: 0;right: 0;opacity: 0.6;z-index: 9999;color:#111111!important;">-->
+        <!--<nav class="navbar navbar-default">-->
+            <!--<div class="container">-->
+                <!--<div class="navbar-header">-->
+                    <!--<a class="navbar-brand" href="#">迅蚁<small>Xunyi</small></a>-->
+                <!--</div>-->
+                <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+                    <!--<ul class="nav navbar-nav"></ul>-->
+                    <!--<ul class="nav navbar-nav navbar-right">-->
+                        <!--&lt;!&ndash; <li><a href="main.html">主页面</a></li> &ndash;&gt;-->
+                        <!--<li><a href="maingoogle.html">主页面</a></li>-->
+                        <!--<li><a href="fline.html">航线记录</a></li>-->
+                        <!--<li class="dropdown">-->
+                            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">架次信息管理<span class="caret"></span></a>-->
+                            <!--<ul class="dropdown-menu">-->
+                                <!--<li><a href="flightcreate.html">架次信息录入</a></li>-->
+                                <!--<li><a href="flightsearch.html">架次信息查看</a></li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</nav>-->
+    <!--</header>-->
+    <div class="container" style="margin-top: 50px;">
+        <div class="row" style="text-align: center;">
+            <h2 style="color: #318ECA;">架次信息录入</h2>
+        </div>
+        <div class="row" style="text-align: center;margin-top: 20px;">
+            <form class="form-horizontal clouddata-form" role="form" style="width: 60%;margin:0 auto;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        飞行器ID：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="fid" placeholder="请输入飞行器ID" type="text">
+                        </input>
+                    </div>
+                    <!-- <label class="col-sm-2 control-label">
+                        架次编号：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="id" placeholder="请输入架次编号" type="text">
+                        </input>
+                    </div> -->
+                    <label class="col-sm-2 control-label">
+                        时间：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="dt" placeholder="请输入时间" type="date">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        架次编号：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="id" placeholder="请输入架次编号" type="text">
+                        </input>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        起飞场温度：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="temp_takeoff" placeholder="请输入起飞场温度" type="text">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        起飞场气压：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="temp_takeoff_pa" placeholder="请输入起飞场气压" type="text">
+                        </input>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        着陆场温度：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="temp_landing" placeholder="请输入着陆场温度" type="text">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        着陆场气压：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="pre_landing_pa" placeholder="请输入着陆场气压" type="text">
+                        </input>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        电池编号：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="num_battery" placeholder="请输入电池编号" type="text">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        起飞重量：
+                    </label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="weight_g" placeholder="请输入起飞重量" type="text">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        备注信息：
+                    </label>
+                    <div class="col-sm-10">
+                        <textarea rows="3" type="text" class="form-control" id="remark" placeholder="备注信息"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary ok" id="submit" type="button">提交</button>
+                        </div>
+                    </div>
+            </form>
+            <!--  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <form>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="id">飞行器ID</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="id" placeholder="飞行器ID">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="fid">架次编号</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="fid" placeholder="架次编号">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="dt">时间：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="fid" placeholder="时间">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="num_flight">请输入架次编号</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="num_flight" placeholder="请输入架次编号">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="temp_takeoff">起飞场温度：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="temp_takeoff" placeholder="起飞场温度">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="temp_takeoff_pa">起飞场气压：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="temp_takeoff_pa" placeholder="起飞场气压">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="temp_landing">着陆场温度：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="temp_landing" placeholder="着陆场温度">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="pre_landing_pa">着陆场气压：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="pre_landing_pa" placeholder="着陆场气压">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="num_battery">电池编号：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="num_battery" placeholder="电池编号">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="weight_g">起飞重量：</label>
+                        <input type="text" class="form-control" style="width: 300px;margin-left: 37%;" id="weight_g" placeholder="起飞重量">
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 200px;">
+                        <label style="color: #eeeeee;float: left;text-align: right;width: 35%;" for="remark">备注信息</label>
+                        <textarea type="text" class="form-control" style="width: 500px;height: 200px;resize: none;margin-left: 37%;" id="remark" placeholder="备注信息"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group" style="line-height: 34px;height: 40px;">
+                        <a id="submit" class="btn btn-primary">提交</a>
+                    </div>
+                </form>
+            </div> -->
+            </div>
+        </div>
+        <footer style="width: 100%;height: 50px;position: fixed;bottom: 0;line-height: 50px;text-align: center;color: #ffffff;">
+            <span>生活中，最不能缺的就是乐趣！</span>
+        </footer>
+        <script>
+        $('#submit').on('click', function() {
+            var data = {}
+            if ($('#fid').val() == "") {
+                alert('请输入飞行器id');
+                return;
+            } else {
+                data['fid'] = $('#fid').val();
+            }
+            // if ($('#id').val() == "") {
+            //     alert('请输入架次编号');
+            //     return;
+            // } else {
+            //     data['id'] = $('#id').val();
+            // }
+            if ($('#dt').val() == "") {
+                alert('请输入时间');
+                return;
+            } else {
+                data['dt'] = $('#dt').val().replace(/-/g, '');
+                console.log(data['dt'])
+            }
+            if ($('#id').val() == "") {
+                alert('请输入架次编号');
+                return;
+            } else {
+                data['id'] = $('#id').val();
+            }
+            if ($('#temp_takeoff').val() == "") {
+                alert('请输入起飞场温度');
+                return;
+            } else {
+                data['temp_takeoff'] = $('#temp_takeoff').val();
+            }
+            if ($('#temp_takeoff_pa').val() == "") {
+                alert('请输入起飞场气压');
+                return;
+            } else {
+                data['temp_takeoff_pa'] = $('#temp_takeoff_pa').val();
+            }
+            if ($('#temp_landing').val() == "") {
+                alert('请输入着陆场温度');
+                return;
+            } else {
+                data['temp_landing'] = $('#temp_landing').val();
+            }
+            if ($('#pre_landing_pa').val() == "") {
+                alert('请输入着陆场气压');
+                return;
+            } else {
+                data['pre_landing_pa'] = $('#pre_landing_pa').val();
+            }
+            if ($('#num_battery').val() == "") {
+                alert('请输入电池编号');
+                return;
+            } else {
+                data['num_battery'] = $('#num_battery').val();
+            }
+            if ($('#weight_g').val() == "") {
+                alert('请输入飞机重量');
+                return;
+            } else {
+                data['weight_g'] = $('#weight_g').val();
+            }
+            if ($('#remark').val() == "") {
+                alert('请输入备注信息');
+                return;
+            } else {
+                data['remark'] = Base64.encode($('#remark').val());
+            }
+            console.log("data is ", data);
+            $.ajax({
+                // url:'http://121.199.53.63:9999/submitbatch',
+                url: pointurl + 'submitbatch',
+                type: 'post',
+                data: data,
+                success: function(result) {
+                    result = JSON.parse(result);
+                    if (result.err == 0) {
+                        alert('添加成功');
+                        $('input,textarea').val('');
+                    } else if (result.err == 2) {
+                        alert("架次编号重复,请重试!")
+                    } else {
+                        alert('错误：' + result.msg);
+                    }
+                },
+                error:function (result) {
+                    // alert('出错啦！' + result.msg);
+                    alert('出错啦！请稍后重试');
+                }
+            });
+        });
+        var formatDateTime = function () { 
+        // console.log(date) 
+        var date=new Date();
+            console.log(date) 
+            var y = date.getFullYear();  
+            var m = date.getMonth() + 1;  
+            m = m < 10 ? ('0' + m) : m;  
+            var d = date.getDate();  
+            d = d < 10 ? ('0' + d) : d;  
+            // var h = date.getHours();  
+            // var minute = date.getMinutes();  
+            // minute = minute < 10 ? ('0' + minute) : minute;  
+            // t=y + '/' + m + '/' + d+' '+h+':'+minute; 
+            
+            t=y + '-' + m + '-' + d; 
+            // return t; 
+            $('#dt').val(t)
+        }; 
+        formatDateTime();
+        </script>
+</body>
+
+</html>

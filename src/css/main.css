@@ -191,7 +191,8 @@ textarea {
 }
 /*监控页面*/
 .s-head{
-
+    overflow: hidden;
+/*background: rgba(0,0,0,0.5);*/
 }
 .menu-item{
     display: inline-block;
@@ -221,6 +222,33 @@ color:#2A2A2A;
     background: #FFCD00;
     color:#fff;
 }
+
+.top-flight{
+    background-color: #444343;
+    height:60px;
+    line-height: 60px;
+    overflow: hidden;
+    color:#A09F9F;
+}
+.single-top{
+    display: -moz-box;
+    display: -webkit-box;
+    display: box;
+}
+.single-top-block{
+    text-align:center;
+    box-flex:1;
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+}
+.f-status{
+    margin-left:4px;
+    color: #FFCD00;
+    font-size: 30px;
+}
+
+
+
 
 .container-fluid,
 .container-fluid > div {

@@ -56,12 +56,12 @@ function initMap() {
                             polyLine.setPath(lineArr);
                             var inputs = $('.single-right-up-sub').eq(num).find('input');
 
-                            console.log("火星坐标转wgs84前 clickPointLatLng is ", clickPointLatLng.lng(), clickPointLatLng.lat());
-                            var curcoordpoint = coordTransform(clickPointLatLng.lng(), clickPointLatLng.lat(), 1);
+                            console.log("火星坐标转wgs84前 clickPointLatLng is ", e.latLng.lng(), e.latLng.lat());
+                            var curcoordpoint = coordTransform(e.latLng.lng(), e.latLng.lat(), 1);
                             console.log("火星坐标转wgs84后 gcj02towgs84 is ", curcoordpoint);
 
-                            inputs[0].value = curcoordpoint[0].toFixed(6);
-                            inputs[1].value = curcoordpoint[1].toFixed(6);
+                            inputs[0].value = (curcoordpoint[0]).toFixed(6);
+                            inputs[1].value = (curcoordpoint[1]).toFixed(6);
                             // inputs[0].value = e.latLng.lng().toFixed(6);
                             // inputs[1].value = e.latLng.lat().toFixed(6);
                         }
@@ -211,8 +211,14 @@ var flightPointClick = function (ele) {
     var target = $(ele).parent();
     if (target.hasClass('select')) {
         target.removeClass('select');
+
+        target.find(".ftplus img").attr("src","../images/ftplus.png");
+        target.find(".ftminus img").attr("src","../images/ftminus.png");
     } else {
         target.addClass('select');
+
+        target.find(".ftplus img").attr("src","../images/ftplus02.png");
+        target.find(".ftminus img").attr("src","../images/ftminus02.png");
     }
 
 };
@@ -1201,7 +1207,7 @@ var uavCtrlByHands = function (el) {
 
                 var tempi = 0;
                 // buffer.setFloat32(6 + 4 * (tempi++), ($("#offset_long_deg").val() * 1.0).toFixed(6), LE);
-                // buffer.setFloat32(6 + 4 * (tempi++), ($("#offset_lat_deg").val() * 1.0).toFixed(6), LE); 
+                // buffer.setFloat32(6 + 4 * (tempi++), ($("#offset_lat_deg").val() * 1.0).toFixed(6), LE);
                 var offset_long_deg = $("#offset_long_deg").val() * 1e7;
                 var offset_lat_deg = $("#offset_lat_deg").val() * 1e7;
 
@@ -1586,20 +1592,23 @@ var clickLnglat = [];
 
 /* 添加点 */
 var addFlightPoint = function () {
+    $('.single-right-up-sub.select').find('.ftplus img').attr('src','../images/ftplus.png');
+    $('.single-right-up-sub.select').find('.ftminus img').attr('src','../images/ftminus.png');
     $('.single-right-up-sub').removeClass('select');
+
 
     // console.log("火星坐标转wgs84前 clickPointLatLng is ", clickPointLatLng.lng(), clickPointLatLng.lat());
     var curcoordpoint = coordTransform(clickPointLatLng.lng(), clickPointLatLng.lat(), 1);
     // console.log("火星坐标转wgs84后 gcj02towgs84 is ", curcoordpoint);
 
     var outside = $('<div class="single-right-up-sub select"></div>'),
-        upInsert = $('<span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')">&nbsp;</span>'),
-        upDel = $('<span class="sanjiao glyphicon glyphicon-remove-circle" title="删除航点" onclick="flightPointOperate(this,\'delete\')">&nbsp;</span>'),
+        upInsert = $('<span class="sanjiao glyphicon ftplus" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')"><img src="../images/ftplus02.png" alt="插入航点"></span>'),
+        upDel = $('<span class="sanjiao glyphicon ftminus" title="删除航点" onclick="flightPointOperate(this,\'delete\')"><img src="../images/ftminus02.png" alt="删除航点"></span>'),
         upInfo = $('<div class="single-right-up-block" onclick="flightPointClick(this)"></div>'),
         upInfoNumber = $('<span class="number">' + (Local_count - 1) + '</span>'),
-        upInfoTitle = $('<span class="infos">航点</span>'),
-        // downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" style="width: 90%;" value="' + clickPointLatLng.lng().toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" style="width: 90%;" value="' + clickPointLatLng.lat().toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="2.0"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="25.0" type="text"/><span>m</span></td></tr></tbody></table></div>')
-        downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" style="width: 90%;" value="' + curcoordpoint[0].toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" style="width: 90%;" value="' + curcoordpoint[1].toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="2.0"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="25.0" type="text"/><span>m</span></td></tr></tbody></table></div>')
+        upInfoTitle = $('<span class="infos">航点</span><img class="infos-img" src="../images/fttips.png" alt="12">'),
+        // downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" value="' + clickPointLatLng.lng().toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" value="' + clickPointLatLng.lat().toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="2.0"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="25.0" type="text"/><span>m</span></td></tr></tbody></table></div>')
+        downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" value="' + curcoordpoint[0].toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" value="' + curcoordpoint[1].toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="2.0"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="25.0" type="text"/><span>m</span></td></tr></tbody></table></div>')
     $('.single-right-up').append(outside.append(upInsert).append(upDel).append(upInfo.prepend(upInfoTitle).prepend(upInfoNumber)).append(downinfo));
 }
 /* 输入航点经纬度，修改marker在地图上的位置 */
@@ -1645,7 +1654,7 @@ var flightPointOperate = function (eve, name) {
             var insertSpeed = ((nextPoint.find("input[name=speed]").val() * 1 + sub.find("input[name=speed]").val() * 1) / 2).toFixed(1);
             var insertAltitude = (sub.find("input[name=altitude]").val() * 1).toFixed(1);
 
-            var insertPoint = '<div class="single-right-up-sub"><span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')">&nbsp;</span><span class="sanjiao glyphicon glyphicon-remove-circle" title="删除航点" onclick="flightPointOperate(this,\'delete\')">&nbsp;</span><div class="single-right-up-block" onclick="flightPointClick(this)"><span class="number">' + insertNum + '</span><span class="infos">航点</span></div><div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" style="width: 90%;" value="' + insertLon + '"></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" style="width: 90%;" value="' + insertLat + '" type="text"></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="' + insertSpeed + '"><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="' + insertAltitude + '" type="text"><span>m</span></td></tr></tbody></table></div></div>';
+            var insertPoint = '<div class="single-right-up-sub"><span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')"><img src="../images/ftplus.png" alt="插入航点"></span><span class="sanjiao glyphicon ftminus" title="删除航点" onclick="flightPointOperate(this,\'delete\')"><img src="../images/ftminus.png" alt="删除航点"></span><div class="single-right-up-block" onclick="flightPointClick(this)"><span class="number">' + insertNum + '</span><span class="infos">航点</span></div><div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" value="' + insertLon + '"></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" value="' + insertLat + '" type="text"></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="' + insertSpeed + '"><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="' + insertAltitude + '" type="text"><span>m</span></td></tr></tbody></table></div></div>';
 
             sub.after(insertPoint);
         }
@@ -2028,12 +2037,12 @@ var drawSearchPoint = function (draggable, curcount, curpoint) {
                         polyLine.setPath(lineArr);
                         var inputs = $('.single-right-up-sub').eq(num).find('input');
 
-                        console.log("火星坐标转wgs84前 clickPointLatLng is ", clickPointLatLng.lng(), clickPointLatLng.lat());
-                        var curcoordpoint = coordTransform(clickPointLatLng.lng(), clickPointLatLng.lat(), 1);
+                        console.log("火星坐标转wgs84前 clickPointLatLng is ", e.latLng.lng(), e.latLng.lat());
+                        var curcoordpoint = coordTransform(e.latLng.lng(), e.latLng.lat(), 1);
                         console.log("火星坐标转wgs84后 gcj02towgs84 is ", curcoordpoint);
 
-                        inputs[0].value = curcoordpoint[0];
-                        inputs[1].value = curcoordpoint[1];
+                        inputs[0].value = (curcoordpoint[0]).toFixed(6);
+                        inputs[1].value = (curcoordpoint[1]).toFixed(6);
                         // inputs[0].value = e.latLng.lng();
                         // inputs[1].value = e.latLng.lat();
                         // }
@@ -2047,14 +2056,16 @@ var drawSearchPoint = function (draggable, curcount, curpoint) {
         $('.single-right-up-sub').removeClass('select');
 
         var outside = $('<div class="single-right-up-sub select"></div>'),
-            upInsert = $('<span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')">&nbsp;</span>'),
-            upDel = $('<span class="sanjiao glyphicon glyphicon-remove-circle" title="删除航点" onclick="flightPointOperate(this,\'delete\')">&nbsp;</span>'),
+            upInsert = $('<span class="sanjiao glyphicon ftplus" title="插入航点" onclick="flightPointOperate(this,\'insertpoint\')"><img src="../images/ftplus.png" alt="插入航点"></span>'),
+            upDel = $('<span class="sanjiao glyphicon ftminus" title="删除航点" onclick="flightPointOperate(this,\'delete\')"><img src="../images/ftminus.png" alt="删除航点"></span>'),
             upInfo = $('<div class="single-right-up-block" onclick="flightPointClick(this)"></div>'),
             upInfoNumber = $('<span class="number">' + i + '</span>'),
-            upInfoTitle = $('<span class="infos">航点</span>'),
-            downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" style="width: 90%;" value="' + points[i].lon.toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" style="width: 90%;" value="' + points[i].lat.toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="' + (points[i].v * 1).toFixed(1) + '"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="' + (points[i].alt * 1).toFixed(1) + '" type="text"/><span>m</span></td></tr></tbody></table></div>')
+            upInfoTitle = $('<span class="infos">航点</span><img class="infos-img" src="../images/fttips.png" alt="12">'),
+            downinfo = $('<div class="single-right-up-hidden"><table><tbody><tr><td class="info">经度 :</td><td class="input"><input name="lon" onkeyup="enterLonLatValues(this)" type="text" value="' + points[i].lon.toFixed(6) + '"/></td></tr><tr><td class="info">纬度 :</td><td class="input"><input name="lat" onkeyup="enterLonLatValues(this)" value="' + points[i].lat.toFixed(6) + '" type="text"/></td></tr><tr><td class="info">速度 :</td><td class="input"><input name="speed" type="text" value="' + (points[i].v * 1).toFixed(1) + '"/><span>m/s</span></td></tr><tr><td class="info">高度 :</td><td class="input"><input name="altitude" value="' + (points[i].alt * 1).toFixed(1) + '" type="text"/><span>m</span></td></tr></tbody></table></div>')
         $('.single-right-up').append(outside.append(upInsert).append(upDel).append(upInfo.prepend(upInfoTitle).prepend(upInfoNumber)).append(downinfo));
     }
+    $('.single-right-up-sub.select').find('.ftplus img').attr('src','../images/ftplus02.png');
+    $('.single-right-up-sub.select').find('.ftminus img').attr('src','../images/ftminus02.png');
     if (flight) {
         flight.setPosition(lineArr[0]);
     }
@@ -2062,7 +2073,7 @@ var drawSearchPoint = function (draggable, curcount, curpoint) {
         lineArr[0] = lineArr[1];
     }
     // 第一个航点不能删除
-    $('.single-right-up-sub').eq(0).find(".glyphicon-remove-circle").remove();
+    $('.single-right-up-sub').eq(0).find(".ftminus").remove();
 
 
     Local_count = counts;
@@ -2145,7 +2156,12 @@ var changeCtlIcons = function (params) {
     for (var i = param2.length - 1; i >= 0; i--) {
         var type = control_icons.ids[length - 1 - i];
 
-        $('#' + type).attr('src', '../images/ctrlogo/' + control_icons.status[param2[i]] + control_icons.icons[type])
+        $('#' + type).attr('src', '../images/ctrlogo/' + control_icons.status[param2[i]] + control_icons.icons[type]);
+        if (param2[i] == "1") {
+            $('#' + type).next().addClass('error');
+        } else{
+            $('#' + type).next().removeClass('error');
+        }
         // console.log('param2[i] is',param2[i]);
         // console.log('type is ', type);
         // console.log('control_icons.status  is ', control_icons.status[param2[i]]);
@@ -2247,7 +2263,7 @@ var canvasDraw = function (vn, ve, beforevn, beforeve) {
         context.fill();
     }
 };
-// canvasDraw();
+//canvasDraw();
 
 /* 放弃控制飞行器 */
 /* 20160805 修改为不需要*/
@@ -2375,7 +2391,15 @@ $('#saveAirLine').on('click', function () {
     if ($('#pointID').val() == "") {
         alert('请输入航路点名称');
     } else {
-        data['name'] = $('#pointID').val().toString();
+        var reg = /[\u4E00-\u9FA5]/;
+        if(!reg.test($('#pointID').val().toString())){
+            console.log('合法');
+            data['name'] = $('#pointID').val().toString();
+        }else{
+            console.log('不能含有中文');
+            alert("不能含有中文");
+            return false;
+        }
     }
     // 飞行之后
     // var counts = infos.mission_ack_2.count;

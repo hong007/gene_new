@@ -849,8 +849,8 @@ function connect() {
                             $('#imgZoom').attr('src', 'data:image/jpg;base64,' + imageAllData);
                             imageAllData = '';
                         } else {
-                            $("#leftMain1").hide();
-                            $("#leftMain2").show();
+                            // $("#leftMain1").hide();
+                            $(".reback-img").show();
                             $('#leftMainImg').attr('src', 'data:image/jpg;base64,' + imageAllData);
                             imageAllData = '';
                         }
@@ -873,12 +873,14 @@ function connect() {
                     pic += String.fromCharCode(arr[i]);
                 }
                 pic = btoa(pic);
-                $("#leftMain1").hide();
-                $("#leftMain2").show();
+                // $("#leftMain1").hide();
+                // $("#leftMain2").show();
+                $(".reback-img").show();
                 $('#leftMainImg').attr('src', 'data:image/jpg;base64,' + pic);
             } else {
-                $("#leftMain1").show();
-                $("#leftMain2").hide();
+                // $("#leftMain1").show();
+                // $("#leftMain2").hide();
+                $(".reback-img").show();
             }
         } else if (msgid == 128) {
             console.log('msgid', msgid, 'id length', dv.byteLength);
@@ -2245,7 +2247,7 @@ var canvasDraw = function (vn, ve, beforevn, beforeve) {
         context.fill();
     }
 };
-canvasDraw();
+// canvasDraw();
 
 /* 放弃控制飞行器 */
 /* 20160805 修改为不需要*/

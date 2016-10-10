@@ -119,6 +119,10 @@ var drapExpFlightMarker = function (id, bettery, deg, weight) {
         });
         // console.log(overlay[id]);
         flights[id]['plain_marker'] = overlay[id];
+
+
+        // flights[id]['plain_info'] = Info;
+        // flights[id]['plain_overlay'] = overlay[id];
         // marker.addListener('click', function() {`
         //     Info.open(map, marker);
         // });
@@ -288,7 +292,7 @@ function mainConnect() {
         } else if (msgid == 81) {
             //地面站heartbeat解析
             console.info('msgid is ', dv.getUint8(begin), "地面站~~~");
-            console.log(dv.getUint8(begin++),dv.getUint8(begin++),dv.getUint8(begin++),dv.getUint8(begin++),dv.getUint8(begin++),dv.getUint8(begin++));
+            console.log(dv.getUint8(begin++), dv.getUint8(begin++), dv.getUint8(begin++), dv.getUint8(begin++), dv.getUint8(begin++), dv.getUint8(begin++));
 
         } else if (msgid == 250) {
             console.log('msgid', msgid);
@@ -321,7 +325,10 @@ function mainConnect() {
                             $('#flight-no').text(curnums);
                             nums = curnums;
                             $("[data-id=" + id + "]").remove();
-                            console.log('隐藏已下线飞机');
+
+                            // 关闭下线飞机提示框
+                            //flights[id]['plain_info'].close(map, flights[id]['plain_overlay']);
+                            // console.log('隐藏已下线飞机');
                             // }
                         }, 180000);
                     }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>UAV Cloud</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/common.css" rel="stylesheet">
     <script src="../js/jquery.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/commondata.js"></script>
@@ -15,275 +15,424 @@
     <script type="text/javascript" src="../js/CustomMapMarker.js"></script>
     <script type="text/javascript" src="../js/MapComFn.js"></script>
     <script type="text/javascript" src="../js/index.js"></script>
+    <!--<script type="text/javascript" src="../plusins/superslide/jquery.SuperSlide.2.1.1.js"></script>-->
+    <script type="text/javascript">
+        // google.maps.event.addDomListener(window, 'load', initMap);
+    </script>
+    <style>
+        html,
+        body,
+        .container-fluid,
+        .container-fluid > div {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .map {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 9;
+            font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+        }
+
+        #container {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+        }
+
+        .single-page {
+            color: #bbfbfc;
+        }
+
+        .row > div:not(:first-child) {
+            position: absolute;
+            z-index: 50;
+        }
+
+        .control-label {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .col-sm-9 {
+            padding-left: 0;
+        }
+
+        .table-line th,
+        .table-line td {
+            text-align: center;
+        }
+
+        .table-line td {
+            cursor: pointer;
+        }
+
+        .table-line tr th:first-child,
+        .table-line tr td:first-child {
+            text-align: left;
+        }
+
+        /* 日志滚动css */
+
+        .txtMarquee-top {
+            width: 240px;
+            overflow: hidden;
+            position: absolute;
+            bottom: 96px;
+            height: 100px;
+            color: red;
+            /*border: 1px solid #ccc;*/
+        }
+
+        .infoList {
+            padding: 0 0 0 5px;
+        }
+    </style>
 </head>
 
 <body>
-<div class="wrapper">
-
-    <div class="s-left">
-        <header class="s-head clearfix">
-            <nav class="navbar noMargin fl">
-                <div class="navbar-header">
-                    <ul class="s-menu">
-                        <li class="menu-item">操控
-                            <ul class="sub-menu">
-                                <li onclick="uavStart()">开始起飞</li>
-                                <li onclick="uavStop()">应急着陆</li>
-                                <li onclick="uavCtrlByHands(1)">人工操作</li>
-                                <li id="ruleZoom">测距</li>
-                            </ul>
-                        </li>
-
-                        <li class="menu-item">数据
-                            <ul class="sub-menu">
-                                <li><a href="javascript:;"
-                                       onclick="window.location.href = 'realtimedata.html?'+document.getElementById('heartbeat.id_uav_xyi').innerText"
-                                       target="_blank">实时数据分析</a></li>
-                                <li data-target="#routeLine" data-toggle="modal">保存航路</li>
-                                <li data-target="#searchLine" data-toggle="modal">
-                                    查找航路
-                                </li>
-                                <li onclick="flightPointDeleteAll()">清空本地航路</li>
-                                <li id="clearRemoteData">清空远程航路</li>
-                            </ul>
-                        </li>
-                        <li class="menu-item">设置
-                            <ul class="sub-menu">
-                                <li onclick="backToMain()">回到主页</li>
-                                <li data-toggle="modal" data-target="#pid">控制调参</li>
-                                <li onclick="getControl()">申请控制</li>
-                                <li data-toggle="modal" data-target="#offsetSet">设置飞机偏移</li>
-                                <li data-toggle="modal" data-target="#emLandInfoSet">设置应急着陆点</li>
-                                <li data-toggle="modal" data-target="#localGpsOffset">设置相对高度差</li>
-                                <li data-toggle="modal" data-target="#XPPid">XP控制调参</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="top-status fr">
-                <div class="curcontrol-status inbk">
-                    <p>当前权限：<span id="curControlStatus"></span></p>
-                </div>
-                <div class="communicate-cont inbk">
-                    <p class="singnal-status-gp"><span class="singnal-status" id="signalWS">WS</span><span
-                            class="singnal-status"
-                            id="signal3G">3G</span>
-                    </p>
-                </div>
-            </div>
-        </header>
-        <div class="top-flight">
-            <div class="single-top allPush">
-                <div class="single-top-block">
-                    <p>无人机ID
-                        <span class="f-status" id="heartbeat.id_uav_xyi">1</span>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>系统状态
-                        <span class="f-status" id="heartbeat.base_mode" data-value="0">离线</span>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>电池余量
-                        <span class="f-status" id="battery_status.battery_remaining">100</span>
-                        <small>%</small>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>相对高度
-                        <span class="f-status" id="global_position_int.relative_alt">0</span>
-                        <small>m</small>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>飞行距离
-                        <span class="f-status" id="FlightLength">0</span>
-                        <small>m</small>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>失联时间
-                        <span class="f-status" id="losttime">0</span>
-                        <small>s</small>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>控制输出
-                        <span class="f-status" id="battery_status.fc_output_ave">0</span>
-                    </p>
-                </div>
-                <div class="single-top-block">
-                    <p>卫星数
-                        <span class="f-status" id="gps_raw.satellites_visible">0</span>
-                    </p>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid single-page noPadding">
+    <div class="row noMargin" style="position: relative;">
         <div class="map">
-            <!--<div id="container" style="cursor: crosshair!important;" tabindex="0"></div>-->
-            <div id="container"  tabindex="0"></div>
+            <div id="container" style="cursor: crosshair!important;" tabindex="0"></div>
         </div>
-        <div class="s-left-icon">
-            <div class="f-icon">
+        <div class="col-md-2 single-md-2 allHeight noPadding" style="top: 0;left: 0;">
+            <div class="single-left allPush">
+                <div class="single-left-block">
+                    <p>无人机ID</p>
+                    <div>
+                        <span id="heartbeat.id_uav_xyi">1</span>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>系统状态</p>
+                    <div>
+                        <span id="heartbeat.base_mode" data-value="0">离线</span>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>电池余量</p>
+                    <div>
+                        <span id="battery_status.battery_remaining">100</span>&nbsp;
+                        <small>%</small>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>相对高度</p>
+                    <div>
+                        <span id="global_position_int.relative_alt">0</span>&nbsp;
+                        <small>m</small>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>飞行距离</p>
+                    <div>
+                        <span id="FlightLength">0</span>&nbsp;
+                        <small>m</small>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>失联时间</p>
+                    <div>
+                        <span id="losttime">0</span>&nbsp;
+                        <small>s</small>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>控制输出</p>
+                    <div>
+                        <span id="battery_status.fc_output_ave">0</span>
+                    </div>
+                    <img class="allWidth" src="../images/singlePage/line.png">
+                </div>
+                <div class="single-left-block">
+                    <p>卫星数</p>
+                    <div>
+                        <span id="gps_raw.satellites_visible">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-md-offset-2 single-center-bottom noPadding">
+            <div class="left">
+                <div class="left-main" id="leftMain1">
+                    <div class="left-main-sky">
+                        <div class="compass-body">
+                            <div id="compass" class="compass"></div>
+                            <div class="compass-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="left-main-flight"></div>
+                </div>
+                <div class="left-main" id="leftMain2" style="display:none;">
+                    <img src="../images/ctrlogo/ok/mmc.png" id="leftMainImg" style="width: 100%;height: 100%;">
+                </div>
+                <canvas id="center-left-canvas"></canvas>
+            </div>
+            <div class="right">
                 <table>
                     <tbody id="ctlIcons">
                     <tr>
-                        <td><img id="mmc" src="../images/ctrlogo/ok/mmc.png"><span class="f-icon-span">机载计算机</span></td>
+                        <td><img id="mmc" src="../images/ctrlogo/ok/mmc.png">机载计算机</td>
+                        <td><img id="fc" src="../images/ctrlogo/ok/fc.png"><span>飞控</span></td>
                     </tr>
                     <tr>
-                        <td><img id="fc" src="../images/ctrlogo/ok/fc.png"><span class="f-icon-span">飞控</span></td>
+                        <td><img id="3g" src="../images/ctrlogo/ok/3g.png"><span>广域通信</span></td>
+                        <td><img id="local" src="../images/ctrlogo/ok/local.png"><span>局域通信</span></td>
                     </tr>
                     <tr>
-                        <td><img id="3g" src="../images/ctrlogo/ok/3g.png"><span class="f-icon-span">广域通信</span></td>
+                        <td><img id="camera" src="../images/ctrlogo/ok/camera.png"><span>摄像头</span></td>
+                        <td><img id="ultrasonic" src="../images/ctrlogo/ok/ultrasonic.png"><span>超声波</span></td>
                     </tr>
                     <tr>
-                        <td><img id="local" src="../images/ctrlogo/ok/local.png"><span class="f-icon-span">局域通信</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><img id="camera" src="../images/ctrlogo/ok/camera.png"><span class="f-icon-span">摄像头</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><img id="ultrasonic" src="../images/ctrlogo/ok/ultrasonic.png"><span
-                                class="f-icon-span">超声波</span></td>
-                    </tr>
-                    <tr>
-                        <td><img id="b1" src="../images/ctrlogo/ok/camera.png"><span class="f-icon-span">备用1</span></td>
+                        <td><img id="b1" src="../images/ctrlogo/ok/camera.png"><span>备用1</span></td>
+                        <td><img id="b2" src="../images/ctrlogo/ok/camera.png"><span>备用2</span></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="hideShowBtn rotate90" title="关闭/打开飞机设备状态"></div>
+            <div class="hideShowBtn"></div>
         </div>
-        <!--航路回传图片-->
-        <div class="reback-img" style="display:none;">
-            <div class="left-main" id="leftMain2">
-                <img src="../images/ctrlogo/ok/mmc.png" id="leftMainImg" style="width: 100%;height: 100%;">
-            </div>
+        <div class="single-center-top">
+            <ul class="menu">
+                <li class="menu-li"
+                    onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}">
+                    操控<img class="left" src="../images/singlePage/groupline.png"><img
+                        style="width: calc(100% + 20px);left:-10px;list-style: none;" class="bottom"
+                        src="../images/singlePage/c.png">
+                    <ul class="sub-menu" style="width: calc(100% + 10px);">
+                        <li onclick="uavStart()">开始起飞</li>
+                        <li onclick="uavStop()">应急着陆</li>
+                        <!-- <li>暂定自主任务</li>
+                    <li>恢复自主任务</li> -->
+                        <li onclick="uavCtrlByHands(1)">人工操作</li>
+                        <li id="ruleZoom">测距</li>
+                    </ul>
+                </li>
+                <li class="menu-li"
+                    onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}">
+                    数据<img class="left" src="../images/singlePage/groupline.png"><img style="width: calc(100% + 10px);"
+                                                                                      class="bottom"
+                                                                                      src="../images/singlePage/a.png">
+                    <ul class="sub-menu" style="width: calc(100% + 10px);list-style: none;">
+                        <li><a href="javascript:;"
+                               onclick="window.location.href = 'realtimedata.html?'+document.getElementById('heartbeat.id_uav_xyi').innerText"
+                               target="_blank" style="color: #bbfbfc!important;">实时数据分析</a></li>
+                        <li data-target="#routeLine" data-toggle="modal" style="color: #bbfbfc!important;">保存航路</li>
+                        <li data-target="#searchLine" data-toggle="modal" style="color: #bbfbfc!important;">
+                            查找航路
+                        </li>
+                        <li style="color: #bbfbfc!important;" onclick="flightPointDeleteAll()">清空本地航路</li>
+                        <li style="color: #bbfbfc!important;" id="clearRemoteData">清空远程航路</li>
+                    </ul>
+                </li>
+                <li class="menu-li"
+                    onclick="if($(this).hasClass('selected')){$('.menu-li.selected').removeClass('selected');$('.sub-menu').hide();}else{$(this).addClass('selected');$('.sub-menu').hide();$(this).children('ul').show();}">
+                    设置<img class="left" src="../images/singlePage/groupline.png"><img style="width: calc(100% + 10px);"
+                                                                                      class="bottom"
+                                                                                      src="../images/singlePage/b.png">
+                    <ul class="sub-menu" style="width: calc(100% + 10px);list-style: none;">
+                        <li data-toggle="modal" data-target="#pid">控制调参</li>
+                        <li onclick="backToMain()">回到主页</li>
+                        <li onclick="getControl()">申请控制</li>
+                        <li data-toggle="modal" data-target="#offsetSet">设置飞机偏移</li>
+                        <li data-toggle="modal" data-target="#emLandInfoSet">设置应急着陆点</li>
+                        <li data-toggle="modal" data-target="#localGpsOffset">设置相对高度差</li>
+                        <li data-toggle="modal" data-target="#XPPid">XP控制调参</li>
+                        <!-- <li onclick="giveupControl()">放弃控制</li> -->
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <div class="single-center-middle col-md-12 middle-showHideDiv noPadding">
-            <div class="s-bottom-top clearfix">
-                <!-- 日志轮播 -->
-                <div class="txtMarquee-top pull-left">
-                    <div class="log-list" id="logList">
-                        <!--<p><span class="date-infor">2011-11-11</span><span class="log-infor">上线</span>-->
-                        <!--</p>-->
-                        <!--<p><span class="date-infor">2011-11-11</span><span class="log-infor">上线</span>-->
-                        <!--</p>-->
-                    </div>
-                </div>
-                <div class="single-center-left pull-right">
 
-                    <div class="left-icon" title="创建航路点" id="addStartEndPoint" style="display: none;">
-                        <img src="../images/singlePage/plusbg.png"/>
-                    </div>
-                    <div class="left-icon" title="航路注入" id="addFlightLine">
-                        <img src="../images/singlePage/njection.png"/>
-                    </div>
-                    <div class="left-icon" title="切换实景地图" id="satellite">
-                        <img src="../images/singlePage/tuceng.png"/>
-                    </div>
-                    <div class="left-icon" title="查询航点" id="searchFlightPoint">
-                        <img src="../images/singlePage/singlesearch.png"/>
-                    </div>
-                    <div class="left-icon" title="查询应急着陆点" id="searchFlightEnd">
-                        <img src="../images/singlePage/sos.png"/>
-                    </div>
-                    <div class="left-icon" title="定位飞机" id="locationFlight" onclick="locationFlight()">
-                        <img src="../images/singlePage/gps02.png"/>
-                    </div>
+        <div class="single-center-left col-md-offset-2">
+            <div class="top-status">
+                <div class="curcontrol-status">
+                    <p>当前权限：<span id="curControlStatus"></span></p>
                 </div>
-            </div>
-            <div class="s-bottom-bt">
-                <div class="block">
-                    <p>
-                        时间戳 : <span id="local_position_ned.time_std_s">0</span>
-                        <small>s</small>
+                <div class="communicate-cont">
+                    <!--<p>连接状态：正常&nbsp;&nbsp;<span class="singnal-status"></span>断开&nbsp;&nbsp;<span-->
+                    <!--class="singnal-status singnal-error"></span>-->
+                    <!--</p>-->
+                    <p><span class="ss-span">WS&nbsp;&nbsp;&nbsp;</span><span
+                            class="ss-span">3G&nbsp;&nbsp;</span>
+                        <!--<span-->
+                        <!--class="ss-span">地面站&nbsp;&nbsp;</span>-->
                     </p>
-                    <p>
-                        北向坐标 : <span id="local_position_ned.x">0</span>
-                        <small>m</small>
-                    </p>
-                    <p>
-                        东向坐标 : <span id="local_position_ned.y">0</span>
-                        <small>m</small>
-                    </p>
-                    <p>
-                        天向坐标 : <span id="local_position_ned.z">0</span>
-                        <small>m</small>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>
-                        北向速度 : <span id="local_position_ned.vx">0</span>
-                        <small>m/s</small>
-                    </p>
-                    <p>
-                        东向速度 : <span id="local_position_ned.vy">0</span>
-                        <small>m/s</small>
-                    </p>
-                    <p>
-                        天向速度 : <span id="local_position_ned.vz">0</span>
-                        <small>m/s</small>
-                    </p>
-                    <p>
-                        航向 : <span id="global_position_int.hdg">0</span>
-                        <small>deg</small>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>
-                        GPS地速 : <span id="gps_raw.vel_gps">0</span>
-                        <small>m/s</small>
-                    </p>
-                    <p>
-                        GPS地速方向 : <span id="gps_raw.cog">0</span>
-                        <small>deg</small>
-                    </p>
-                    <p style="display: none;">
-                        GPS水平置信度 : <span id="gps_raw.eph">0</span>
-                    </p>
-                    <p>
-                        俯仰角 : <span id="global_position_int.pitch_deg">1800</span>
-                    </p>
-                    <p>
-                        滚转角 : <span id="global_position_int.roll_deg">1800</span>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>
-                        电池电压 : <span id="battery_status.voltages">0</span>
-                    </p>
-                    <p>
-                        电池电流 : <span id="battery_status.current_battery">0</span>
-                        <small>A</small>
-                    </p>
-                    <p>
-                        海拔高度 : <span id="elevation">0</span>
-                        <small>m</small>
+                    <p class="singnal-status-gp"><span class="singnal-status" id="signalWS"></span><span
+                            class="singnal-status"
+                            id="signal3G"></span>
+                        <!--<span class="singnal-status singnal-error" id="signalGround"></span>-->
                     </p>
                 </div>
             </div>
-            <div class="hideShowBtn" title="关闭/打开飞机数据"></div>
+
+            <div class="left-icon" title="创建航路点" id="addStartEndPoint" style="display: none;">
+                <img src="../images/singlePage/plusbg.png"/>
+            </div>
+            <div class="left-icon" title="航路注入" id="addFlightLine">
+                <img src="../images/singlePage/njection.png"/>
+            </div>
+            <div class="left-icon" title="切换实景地图" id="satellite">
+                <img src="../images/singlePage/tuceng.png"/>
+            </div>
+            <div class="left-icon" title="查询航点" id="searchFlightPoint">
+                <img src="../images/singlePage/singlesearch.png"/>
+            </div>
+            <div class="left-icon" title="查询应急着陆点" id="searchFlightEnd">
+                <img src="../images/singlePage/sos.png"/>
+            </div>
+            <div class="left-icon" title="定位飞机" id="locationFlight" onclick="locationFlight()">
+                <img src="../images/singlePage/gps02.png"/>
+            </div>
+            <!--
+        <div class="left-icon" title="放大">
+            <img src="../images/singlePage/plus.png" />
         </div>
-    </div>
-    <div class="s-right">
-        <div class="single-md-3 allHeight noPadding">
+        <div class="left-icon" title="缩小">
+            <img src="../images/singlePage/less.png" />
+        </div>-->
+        </div>
+        <div class="single-center-middle col-md-7 col-md-offset-2 middle-showHideDiv">
+            <!-- 日志轮播 -->
+            <div class="txtMarquee-top">
+                <!--  <div class="hd">
+                <a class="next"></a>
+                <a class="prev"></a>
+            </div> -->
+                <!--<div class="bd">-->
+                <!--<ul class="infoList" id="logList">-->
+                <!--<li><span class="date-infor">2011-11-11</span><span class="log-infor">上线</span></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--<marquee direction="up" behavior="scroll" scrollamount="2" scrolldelay="0" loop="-1" width="240"-->
+                <!--height="85"-->
+                <!--bgcolor="transparent"  vspace="10"  hspace="10" behavior="alternate" style="color: #f00;"-->
+                <!--id="logList">-->
+                <!--<marquee direction="up" behavior="scroll" scrollamount="2" scrolldelay="0" loop="-1" width="240" height="85" bgcolor="transparent" behavior="alternate" style="color: #f00;" id="logList">-->
+                <div id="logList">
+                    <!--<p><span class="date-infor">2011-11-11</span><span class="log-infor">上线</span>-->
+                    <!--</p>-->
+                    <!--<p><span class="date-infor">2011-11-11</span><span class="log-infor">上线</span>-->
+                    <!--</p>-->
+                </div>
+            </div>
+            <div class="block">
+                <p>
+                    时间戳 : <span id="local_position_ned.time_std_s">0</span>
+                    <small>s</small>
+                </p>
+                <p>
+                    北向坐标 : <span id="local_position_ned.x">0</span>
+                    <small>m</small>
+                </p>
+                <p>
+                    东向坐标 : <span id="local_position_ned.y">0</span>
+                    <small>m</small>
+                </p>
+                <p>
+                    天向坐标 : <span id="local_position_ned.z">0</span>
+                    <small>m</small>
+                </p>
+            </div>
+            <div class="block">
+                <p>
+                    北向速度 : <span id="local_position_ned.vx">0</span>
+                    <small>m/s</small>
+                </p>
+                <p>
+                    东向速度 : <span id="local_position_ned.vy">0</span>
+                    <small>m/s</small>
+                </p>
+                <p>
+                    天向速度 : <span id="local_position_ned.vz">0</span>
+                    <small>m/s</small>
+                </p>
+                <p>
+                    航向 : <span id="global_position_int.hdg">0</span>
+                    <small>deg</small>
+                </p>
+            </div>
+            <div class="block">
+                <p>
+                    GPS地速 : <span id="gps_raw.vel_gps">0</span>
+                    <small>m/s</small>
+                </p>
+                <p>
+                    GPS地速方向 : <span id="gps_raw.cog">0</span>
+                    <small>deg</small>
+                </p>
+                <p style="display: none;">
+                    GPS水平置信度 : <span id="gps_raw.eph">0</span>
+                </p>
+                <p>
+                    俯仰角 : <span id="global_position_int.pitch_deg">1800</span>
+                </p>
+                <p>
+                    滚转角 : <span id="global_position_int.roll_deg">1800</span>
+                </p>
+            </div>
+            <div class="block">
+                <p>
+                    电池电压 : <span id="battery_status.voltages">0</span>
+                    <!-- <small>V</small> -->
+                </p>
+                <p>
+                    电池电流 : <span id="battery_status.current_battery">0</span>
+                    <small>A</small>
+                </p>
+                <p>
+                    海拔高度 : <span id="elevation">0</span>
+                    <small>m</small>
+                </p>
+            </div>
+        </div>
+        <!--<div class="col-md-7 allHeight noPadding">
+        <div class="single-center allPush">
+            <div class="single-center-top">
+                <ul class="menu">
+                    <li class="menu-li"
+                        onclick="if($(this).hasClass('selected')){$(this).removeClass('selected')}else{$(this).addClass('selected')}$(this).children('ul').toggle();">
+                        操控<img class="left" src="../images/singlePage/groupline.png"><img
+                            style="width: calc(100% + 20px);left:-10px;" class="bottom"
+                            src="../images/singlePage/c.png">
+                        <ul class="sub-menu" style="width: calc(100% + 10px);">
+                            <li>开始起飞</li>
+                            <li>应急着陆</li>
+                            <li>暂定自主任务</li>
+                            <li>恢复自主任务</li>
+                            <li>人工操作</li>
+                        </ul>
+                    </li>
+                    <li class="menu-li">数据<img class="left" src="../images/singlePage/groupline.png"><img
+                            style="width: calc(100% + 10px);" class="bottom" src="../images/singlePage/a.png"></li>
+                    <li class="menu-li">设置<img class="left" src="../images/singlePage/groupline.png"><img
+                            style="width: calc(100% + 10px);" class="bottom" src="../images/singlePage/b.png"></li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+        <div class="col-md-3 single-md-3 allHeight noPadding" style="top: 0;right: 0">
             <div class="single-right allPush">
-                <div class="single-right-up">
+                <div class="single-right-up" style="height:calc(100% - 125px);">
                     <div class="single-right-up-sub" id="start">
-                        <!--<span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点"-->
-                        <!--onclick="flightPointOperate(this,'insertpoint')">&nbsp;</span> -->
-                        <span class="sanjiao glyphicon ftplus" title="插入航点"
-                              onclick="flightPointOperate(this,'insertpoint')"><img src="../images/ftplus.png"
-                                                                                    alt="插入航点"></span>
+                        <span class="sanjiao glyphicon glyphicon-plus-sign" title="插入航点"
+                              onclick="flightPointOperate(this,'insertpoint')">&nbsp;</span>
                         <div class="single-right-up-block" onclick="flightPointClick(this)"><span
-                                class="number">0</span><span class="infos">起点</span><img class="infos-img"
-                                                                                         src="../images/fttips.png"
-                                                                                         alt="12"></div>
+                                class="number">0</span><span class="infos">起点</span></div>
                         <div class="single-right-up-hidden">
                             <table>
                                 <tbody>
@@ -291,13 +440,13 @@
                                     <td class="info">经度 :</td>
                                     <td class="input">
                                         <input name="lon" onkeyup="enterLonLatValues(this)" type="text"
-                                               value="119.946209">
+                                               style="width: 100%;" value="119.946209">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="info">纬度 :</td>
                                     <td class="input">
-                                        <input name="lat" onkeyup="enterLonLatValues(this)"
+                                        <input name="lat" onkeyup="enterLonLatValues(this)" style="width: 100%;"
                                                value="30.360361" type="text">
                                     </td>
                                 </tr>
@@ -316,13 +465,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="single-right-down">
+                    <img src="../images/singlePage/logo.png" style="">
+                </div>
             </div>
-            <div class="hideShowBtn rotate270" title="关闭/打开右侧航点"></div>
         </div>
     </div>
 </div>
-
-<!--申请授权-->
 <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="dlg-alert-label" aria-hidden="true">
     <div class="modal-dialog" style="margin-top:150px;width: 250px;">
         <div class="modal-content">
@@ -397,6 +546,7 @@
                         </label>
                         <div class="col-sm-8">
                             <input class="form-control" id="pointID" placeholder="请输入航点名称" type="text">
+                            </input>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary ok" id="saveAirLine" type="button">保存</button>
@@ -431,6 +581,7 @@
                         </label>
                         <div class="col-sm-8">
                             <input class="form-control" id="pointsearch" placeholder="请输入航点名称" type="text">
+                            </input>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary" id="searchLineBtn" type="button">查找</button>
@@ -540,6 +691,7 @@
                         </label>
                         <div class="col-sm-8">
                             <input class="form-control" id="offset_long_deg" placeholder="请输入经度偏移" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -548,6 +700,7 @@
                         </label>
                         <div class="col-sm-8">
                             <input class="form-control" id="offset_lat_deg" placeholder="请输入纬度偏移" type="text">
+                            </input>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary ok" id="offsetBtn" type="button"
@@ -584,6 +737,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="route_vel" placeholder="请输入应急航路速度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -592,6 +746,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="route_alt" placeholder="请输入应急航路高度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -600,6 +755,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_1_long_deg" placeholder="请输入着陆点1经度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -608,6 +764,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_1_lat_deg" placeholder="请输入着陆点1纬度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -616,6 +773,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_1_rep_h_m" placeholder="请输入着陆点1高度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -624,6 +782,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_2_long_deg" placeholder="请输入着陆点2经度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -632,6 +791,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_2_lat_deg" placeholder="请输入着陆点2纬度" type="text">
+                            </input>
                         </div>
                     </div>
                     <div class="form-group">
@@ -640,6 +800,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="em_2_rep_h_m" placeholder="请输入着陆点2高度" type="text">
+                            </input>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary ok" id="offsetBtn" type="button"
@@ -676,6 +837,7 @@
                         </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="height_diff_landing_m" placeholder="请输入相对高度差" type="text">
+                            </input>
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary ok" id="diffLandingBtn" type="button"
@@ -747,61 +909,104 @@
     </div>
 </div>
 </body>
-<script src="../js/singlegoogle.js?v=201610101207"></script>
+<script src="../js/singlegoogle.js?v=201609281207"></script>
+<style>
+    @keyframes slowOutDiv {
+        from {
+            bottom: 50px;
+        }
+        to {
+            bottom: 310px;
+        }
+    }
+
+    @keyframes slowOutParent {
+        from {
+            bottom: -270px;
+        }
+        to {
+            bottom: 0px;
+        }
+    }
+
+    @keyframes slowInDiv {
+        from {
+            bottom: 310px;
+        }
+        to {
+            bottom: 50px;
+        }
+    }
+
+    @keyframes slowInParent {
+        from {
+            bottom: 0px;
+        }
+        to {
+            bottom: -270px;
+        }
+    }
+
+    /* google map */
+
+    .view-link {
+        display: none;
+    }
+
+    .gm-style-cc {
+        display: none;
+    }
+
+    a[target] img {
+        display: none;
+    }
+</style>
 <script>
     $(function () {
-        //头部菜单选择事件
-        $(".menu-item").click(function () {
-            if ($(this).hasClass('active')) {
-                $('.menu-item.active').removeClass('active');
-                $('.sub-menu').hide();
-            } else {
-                $('.menu-item.active').removeClass('active');
-                $(this).addClass('active');
-                $('.sub-menu').hide();
-                $(this).children('ul').show();
-            }
-        });
         $('.hideShowBtn').on('click', function () {
             if ($(this).hasClass('rotate90')) {
-                if ($(this).parent().hasClass('s-left-icon')) {
-                    $(this).removeClass('rotate90').addClass('rotate270').prev().fadeOut();
-                } else {
-                    $(this).removeClass('rotate90').addClass('rotate270').prev().fadeIn();
-                    $(".s-left").removeClass("active");
-                }
+                $(this).removeClass('rotate90').addClass('rotate270');
             } else if ($(this).hasClass('rotate270')) {
-                if ($(this).parent().hasClass('s-left-icon')) {
-                    $(this).removeClass('rotate270').addClass('rotate90').prev().fadeIn();
-                } else {
-                    $(this).removeClass('rotate270').addClass('rotate90').prev().fadeOut();
-                    $(".s-left").addClass("active");
-                }
+                $(this).removeClass('rotate270').addClass('rotate90');
             } else if ($(this).hasClass('rotate180')) {
-                $(this).removeClass('rotate180').prev().fadeIn();
+                $('.middle-showHideDiv').css({
+                    'bottom': 310,
+                    animation: 'slowOutDiv 0.3s ease-in-out 0s 1'
+                });
+                $(this).parent().css({
+                    'bottom': 0,
+                    animation: 'slowOutParent 0.3s ease-in-out 0s 1'
+                });
+                $(this).removeClass('rotate180');
             } else {
-                $(this).addClass('rotate180').prev().fadeOut();
+                $(this).parent().css({
+                    'bottom': -270,
+                    animation: 'slowInParent 0.3s ease-in-out 0s 1'
+                });
+                $('.middle-showHideDiv').css({
+                    'bottom': 50,
+                    animation: 'slowInDiv 0.3s ease-in-out 0s 1'
+                });
+                $(this).addClass('rotate180');
             }
         });
         $('.single-center-bottom').width($('body').width() - $('.single-md-2').width() - $('.single-md-3').width()).css('margin-left', $('.single-md-2').width());
-        //        if ($(window).width() < 1440) {
-        //            $('.hideShowBtn').addClass('rotate180');
-        //        }
+        if ($(window).width() < 1440) {
+            $('.hideShowBtn').addClass('rotate180');
+        }
 
         $(".left-icon").click(function () {
-            if ($(this).hasClass("clicking")) {
-                $(this).removeClass("clicking");
-                var src = $(this).find("img").attr("src").split('-')[0];
-                $(this).find("img").attr("src", src + ".png")
-            } else {
-                $(this).addClass("clicking");
-                var src = $(this).find("img").attr("src").split('.png')[0];
-                $(this).find("img").attr("src", src + "-atv.png")
-
-            }
+            $(this).toggleClass("clicking");
         });
 
     });
+    //    jQuery(".txtMarquee-top").slide({
+    //        mainCell: ".bd ul",
+    //        autoPlay: true,
+    //        effect: "topMarquee",
+    //        vis: 2,
+    //        interTime: 50
+    //    });
 </script>
 
 </html>
